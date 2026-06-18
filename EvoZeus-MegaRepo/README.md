@@ -32,6 +32,7 @@
 ## 当前核心文档
 
 - [EvoZeus 整体设计](00-global/evozeus-overall-design.md)
+- [Repo Structure And Naming](00-global/repo-structure-naming.md)
 - [Repo Index](00-global/repo-index.md)
 - [Decision Log](00-global/decision-log.md)
 - [Material Index](00-global/material-index.md)

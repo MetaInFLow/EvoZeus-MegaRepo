@@ -7,6 +7,8 @@
 
 本文是 EvoZeus mega repo 的全局设计入口。它不替代 `10-repos/evozeus` 中的协议、schema、技能和治理细节，而是说明多个 repo 如何协同承载 EvoZeus。
 
+Repo 命名、目录结构和 future runtime / skill / factor 文件组织，见 `repo-structure-naming.md`。
+
 ## 1. One-line Definition
 
 EvoZeus（宙斯）是 Agent Session Judgment Layer：把真实 Agent Session 放上审判台，什么该沉淀，什么该修正，什么该淘汰，由证据决定。
@@ -485,6 +487,7 @@ EvoZeus 的治理原则：
 当前本地来源：
 
 - `30-ops/discord-openclaw-governance-plan.md`
+- `00-global/repo-structure-naming.md`
 - `10-repos/evozeus/SKILL.md`
 - `10-repos/evozeus/docs/design/active/design_doc-v0.1-agent-session-judgment-layer.md`
 - `10-repos/evozeus/docs/decisions/ADR-0001-static-skill-entry-and-zero-install.md`
