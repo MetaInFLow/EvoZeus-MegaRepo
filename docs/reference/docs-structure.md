@@ -2,7 +2,7 @@
 
 - Status: active
 - Last updated: 2026-06-18
-- Scope: `EvoZeus-MegaRepo/docs` 的结构、命名和维护规则
+- Scope: `docs/` 的结构、命名和维护规则
 - Owner: MetaInFlow
 
 ## 1. 目录设计
