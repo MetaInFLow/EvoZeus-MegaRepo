@@ -130,6 +130,85 @@ Repo 职责：
 | `evozeus-factors-official` | maintainer-promoted official Factor packs、GitHub Releases | active shell / 已接入 |
 | `evozeus-runtime` | 未来 CLI/TUI/browser companion/local registry | active shell / 已接入，产品能力仍为 future |
 
+### 4.2 Repo 可见性和权限模型
+
+设计原则：
+
+- `EvoZeus` 的协议、`SKILL.md`、公开 docs 和 schema 应保持 public，作为社区可信入口。
+- 含全局决策、私有资料、未发布路线图、商业上下文和跨 repo 工作记录的空间默认 private。
+- 未来会被用户安装或审计的 runtime、official Factor packs，应在安全边界稳定后转 public。
+- 所有 public artifact 必须先通过 redaction、secret scan、license check 和 maintainer review。
+- visibility change 只能由 `evozeus-owners` 执行，并必须写入 `decision-log.md`。
+
+当前组织事实：
+
+- MetaInFlow 组织当前已有团队：`0812team`，权限语义为 `pull/read`。
+- `0812team` 只能作为内部只读团队使用，不承载 Admin、Maintain、Write 权限。
+- 高权限需要新增专门的 EvoZeus teams，避免把其它项目的默认团队权限混进 EvoZeus 治理。
+
+目标团队：
+
+| Team | GitHub 权限定位 | 成员范围 | 用途 |
+| --- | --- | --- | --- |
+| `evozeus-owners` | Admin | 组织 owner、EvoZeus DRI | repo settings、visibility、secrets、branch protection、release override |
+| `evozeus-maintainers` | Maintain | 核心 maintainer | 日常治理、label、branch policy、release 协调，不默认管理 org-level secrets |
+| `evozeus-protocol-maintainers` | Write / CODEOWNERS review | protocol / schema / governance 负责人 | `EvoZeus` 主 repo 的协议、docs、schema、registry review |
+| `evozeus-community-maintainers` | Write | 官网和内容维护者 | `EvoZeus-community` 的页面、内容、部署变更 |
+| `evozeus-factor-reviewers` | Triage / Write by phase | Factor reviewer | lab issue triage、candidate review、reviewed/rejected 记录 |
+| `evozeus-security-reviewers` | Maintain 或 required reviewer | 安全、供应链、runtime reviewer | scanner module、official pack、runtime 权限和上传链路 review |
+| `evozeus-runtime-maintainers` | Write | runtime 负责人 | future CLI/TUI/local registry/report 代码维护 |
+| `metainflow-internal-read` 或 `0812team` | Read | 内部观察者、协作者 | private repo 只读访问，不参与 merge 或 settings |
+
+每个 repo 的目标可见性：
+
+| Repo | 当前可见性 | 目标可见性 | 理由 | Public gate |
+| --- | --- | --- | --- | --- |
+| `EvoZeus-MegaRepo` | private | private | 含全局设计、私有资料索引、路线图、跨 repo 决策和 submodule 工作面 | 不公开；如需对外同步，只摘录到 public docs |
+| `EvoZeus` | public | public | EvoZeus 的可信入口；协议、zero-install `SKILL.md`、schema 和 governance 需要可审计 | 已 public；持续执行 secret scan 和 CODEOWNERS |
+| `EvoZeus-community` | private | launch 后 public | 官网和社区解释层最终应公开，但 launch 前可能含品牌草稿、未发布内容和部署实验 | 内容定稿、无 secrets、部署配置隔离、public docs review |
+| `evozeus-factor-lab` | private | gate 完成后 public 或 invite-only public | 社区投稿入口最终需要透明，但早期缺 schema/template/CI gate，直接公开会放大审核和安全成本 | schema、PR template、secret/license scan、scanner sandbox policy、moderation rules |
+| `evozeus-factors-official` | private | 首个 stable pack 前转 public | official packs、checksums、SBOM、attestation 必须可被用户审计和安装 | 至少 1 个 reviewed candidate、tagged release flow、checksums、SBOM、attestation、registry PR 流程 |
+| `evozeus-runtime` | private | alpha/beta 后 public | runtime 会执行本地扫描、安装和报告生成，公开源码有助于建立信任；边界未稳前先 private | trust policy、permission model、scanner sandbox、upload-off-by-default、installer lockfile |
+
+每个 repo 的权限分配：
+
+| Repo | Admin | Maintain | Write | Triage / Read | 特殊规则 |
+| --- | --- | --- | --- | --- | --- |
+| `EvoZeus-MegaRepo` | `evozeus-owners` | `evozeus-maintainers` | 不默认开放 | `metainflow-internal-read` / `0812team` read | main protected；submodule 指针变化必须说明影响；不得存 raw private session |
+| `EvoZeus` | `evozeus-owners` | `evozeus-maintainers` | `evozeus-protocol-maintainers` | public read；外部贡献走 fork PR | `SKILL.md`、`schemas/`、`docs/reference/`、governance 变更需 CODEOWNERS review |
+| `EvoZeus-community` | `evozeus-owners` | `evozeus-maintainers` | `evozeus-community-maintainers` | `metainflow-internal-read` / `0812team` read；public 后开放 public read | 部署 secrets 只能在 GitHub Environments / Vercel 中管理；content launch 前 owner review |
+| `evozeus-factor-lab` | `evozeus-owners` | `evozeus-maintainers` | `evozeus-factor-reviewers` | early phase read: internal only；public phase: public issue/PR | scanner code 不能只由 factor reviewer 合并，必须 security review |
+| `evozeus-factors-official` | `evozeus-owners` | `evozeus-maintainers` + `evozeus-security-reviewers` | 少量 release operator | read 随 visibility；public 后开放 public read | release 只能来自 reviewed candidate；tag、manifest、checksum、SBOM 必须一致 |
+| `evozeus-runtime` | `evozeus-owners` | `evozeus-maintainers` + `evozeus-security-reviewers` | `evozeus-runtime-maintainers` | `metainflow-internal-read` / `0812team` read；public 后开放 public read | 涉及扫描、上传、联网、执行插件的变更必须 security review |
+
+Branch protection baseline：
+
+| Repo 类型 | Required reviews | Required checks | 其它保护 |
+| --- | --- | --- | --- |
+| mega repo | 1 maintainer review | markdown / link check 可后补 | 禁止 force push；submodule pointer 变化必须在 PR 描述中说明 |
+| protocol repo | 2 reviews；高风险路径必须 CODEOWNERS | schema validate、docs checks、secret scan | 禁止 direct push to main；require conversation resolution |
+| community frontend | 1 review；launch 内容需 owner review | build、test、lint、secret scan | preview deployment 必须与 PR 绑定 |
+| factor lab | 1 factor review；scanner code 追加 1 security review | schema、privacy、secret、license、scanner static checks | 投稿默认不能直接进入 official 或 registry |
+| official packs | 2 reviews；至少 1 security reviewer | manifest validate、checksum verify、SBOM/attestation check | release 必须绑定 tag；禁止从 moving branch 发布 |
+| runtime | 2 reviews；权限/上传/扫描路径必须 security review | build、test、sandbox tests、secret scan、dependency audit | 默认 local-first；上传和联网必须 opt-in |
+
+权限授予流程：
+
+1. 先判断身份类型：owner、core maintainer、repo maintainer、reviewer、internal observer、external contributor。
+2. 优先加 team，不直接给个人 repo 权限；临时协作必须有到期时间。
+3. 只给完成任务所需的最低权限：Read < Triage < Write < Maintain < Admin。
+4. Admin 只给 `evozeus-owners`；任何 visibility、secret、branch protection 变更都需要 owner 确认。
+5. 外部贡献默认通过 public repo fork PR；private repo 外部协作使用临时 read/write 并定期回收。
+6. 每月审计 Write 及以上权限；每次人员离开项目时立即移除 team，并轮换相关 secrets。
+
+建议执行顺序：
+
+1. 新建 `evozeus-owners`、`evozeus-maintainers`、`evozeus-protocol-maintainers`、`evozeus-community-maintainers`、`evozeus-factor-reviewers`、`evozeus-security-reviewers`、`evozeus-runtime-maintainers`。
+2. 保留 `0812team` 为 read-only，不授予 Write 及以上权限。
+3. 先对 private repo 设置 team read / write / maintain，再补 main branch protection。
+4. 等 public gate 满足后，按顺序公开 `EvoZeus-community`、`evozeus-factor-lab`、`evozeus-factors-official`、`evozeus-runtime`。
+5. 每次公开前新增一条 `decision-log.md` 记录，并在对应 repo 内补 `SECURITY.md`、`CONTRIBUTING.md`、CODEOWNERS 和 secret scan。
+
 ## 5. User Paths
 
 ### 5.1 Judge One Session
