@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解用户从 `evozeus-community/#register` 进入后，如何从 EvoZeus skeleton 按需拼接 runtime、default official factors、judgment 和沉淀路径。
+理解用户从 `evozeus-community/skill` 进入后，如何先完成注册、安装 EvoZeus skeleton 与 EvoZeus skills，再在用户确认后按需拼接 runtime、default official factors、judgment 和沉淀路径。
 
 ## 适合谁
 
@@ -23,29 +23,36 @@
 
 ## 操作步骤
 
-1. 用户访问 community 注册入口：
-   - 入口：`https://evozeus-community.vercel.app/#register`
-   - 用户复制 Start Here command。
-2. Agent 读取 `EvoZeus` 主 repo 的 root `SKILL.md`：
+1. 用户访问 community `/skill` 指引页：
+   - 入口：`https://evozeus-community.vercel.app/skill`
+   - 用户复制 registration / install command。
+2. Agent 读取 `EvoZeus` 主 repo 的 `skills/evozeus-install-registration/SKILL.md`：
+   - 检查本地是否已有 `.evozeus/`。
+   - 如果已有注册信息，先核对 owner、workspace、已安装 skills 和 manifest。
+   - 如果没有，创建最小 `.evozeus/` skeleton，并安装 EvoZeus 主 repo 内的 skills。
+   - 输出 install report，然后停止在安装边界，不直接进入 judgment。
+3. 用户明确要求开始判断时，Agent 才读取 `EvoZeus` 主 repo 的 root `SKILL.md` 和 `skills/evozeus-start-here-onboarding/SKILL.md`：
    - 启动 skeleton：protocol、ontology、evidence、verdict、privacy gate。
+   - 输出 Session Verdict Card。
    - 不静默安装 runtime、scanner 或 factors。
-3. 如果需要本地执行，Agent 按 `skills/index/SKILL.md` 路由到 runtime 场景：
-   - 读取 `skills/evozeus-runtime/SKILL.md`。
+4. 如果需要本地执行，Agent 按 `skills/index/SKILL.md` 路由到 runtime 场景：
+   - 读取 `skills/evozeus-runtime-routing/SKILL.md`。
+   - 再读取 `evozeus-runtime/SKILL.md` 承接 runtime、scanner、runner、local state 和 report generation。
    - 向用户说明要启用的本地能力、读取范围、写入范围、网络行为和回滚方式。
    - 等用户确认后，才进入 runtime path。
-4. runtime 只通过可信路径拼接 default official factors：
+5. runtime 只通过可信路径拼接 default official factors：
    - 读取 `EvoZeus` registry pointer。
    - 读取 `evozeus-factors-official` release manifest。
    - 校验 checksum、SBOM / attestation 和 compatibility。
    - 只启用用户选择的 factors。
-5. runtime 在本地跑 judgment：
+6. runtime 在本地跑 judgment：
    - 扫描 session evidence。
    - 运行 selected official factors。
    - 生成 Session Verdict Card、Evidence Report 或本地 report。
-6. 用户决定是否沉淀：
+7. 用户决定是否沉淀：
    - 不沉淀：结果留在本地。
    - 沉淀：先走 redaction，再按对象分流。
-7. 按沉淀对象进入对应 repo：
+8. 按沉淀对象进入对应 repo：
 
 | 沉淀对象 | 路由 |
 | --- | --- |
@@ -63,6 +70,7 @@
 
 ## 不要做
 
+- 不要把 `/skill` 变成 judgment 或 runtime 执行入口。
 - 不要把 Start Here 变成静默安装。
 - 不要让 runtime 直接消费 lab moving branch。
 - 不要把 executable Factor pack、scanner module 或 runtime infra PR 提到 `EvoZeus` 主 repo。
@@ -74,9 +82,12 @@
 检查这条链路是否成立：
 
 ```text
-community/#register
-  -> EvoZeus root SKILL.md
-  -> optional runtime approval
+evozeus-community/skill
+  -> EvoZeus-Install Registration
+  -> .evozeus reconciliation
+  -> EvoZeus skeleton + skills installed
+  -> user-approved protocol judgment
+  -> optional runtime approval via EvoZeus-Runtime Routing
   -> registry pointer
   -> official manifest / checksum / attestation
   -> local judgment

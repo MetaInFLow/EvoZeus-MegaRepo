@@ -12,6 +12,7 @@ docs/
   README.md
   development-direction/
     README.md
+    skill-system-implementation.md
   tutorials/
     README.md
     user-journey.md
