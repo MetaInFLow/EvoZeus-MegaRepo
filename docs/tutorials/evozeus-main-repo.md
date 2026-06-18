@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解什么时候应该修改 `10-repos/evozeus`，以及如何保持主 repo 的 public protocol / governance 边界。
+理解什么时候应该修改 `10-repos/evozeus`，以及如何保持主 repo 的 Protocol-only / public governance 边界。
 
 ## 适合谁
 
@@ -25,21 +25,29 @@
    - semantic：ontology、verdict、evidence、schema。
    - governance：PR routing、privacy、proof、labels、CODEOWNERS。
    - docs/example：README、example cases、report templates。
+   - registry pointer：official release manifest 的稳定引用和撤回状态。
 2. 保持 PR 小范围，不混合 runtime code、governance、docs 和 community Case。
 3. Factor 相关改动先问：这是 Candidate / registry pointer，还是 pack / scanner？
    - Candidate / registry pointer 留在主 repo。
    - pack / scanner 路由到 `evozeus-factor-lab`。
    - official release 路由到 `evozeus-factors-official`。
-4. 修改后运行主 repo 校验。
+4. Runtime 相关改动先问：这是 protocol / trust policy，还是执行实现？
+   - protocol、trust policy、registry contract 可留在主 repo。
+   - CLI、TUI、companion、scanner implementation、local state、report execution 路由到 `evozeus-runtime`。
+   - 当前 `__infra__` 只作为待迁移 prototype，不作为主 repo 目标职责扩展。
+5. 修改后运行主 repo 校验。
 
 ## 产出
 
 - 一个小范围、可 review 的 public protocol / governance 变更。
+- 必要时更新 registry pointer 或 lifecycle 文档。
 - 必要时更新 mega repo 的 `00-global/decision-log.md`。
 
 ## 不要做
 
 - 不要把 executable Factor pack 或 scanner module 放进主 repo。
+- 不要把 CLI / TUI / companion / local API / `.evozeus` state / SQLite ledger / report execution 放进主 repo。
+- 不要把 `__infra__` 当作新的主 repo 职责继续扩展；它只能作为迁移源或历史 prototype。
 - 不要上传 raw private session。
 - 不要把社区共创等同于给 contributor repo write 权限。
 
