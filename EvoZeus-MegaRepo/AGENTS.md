@@ -15,6 +15,7 @@
 ## 目录约定
 
 - `00-global/`：全局索引、架构、策略、跨 repo 约定与总览文档。
+- `docs/`：介绍文档、开发方向和各部分 tutorial。
 - `10-repos/`：各业务 repo 的本地工作副本、submodule、mirror 或 repo 索引。
 - `20-materials/`：需求、调研、会议纪要、Feishu 导出资料、客户资料与附件。
 - `30-ops/`：运行维护、脚本、任务记录、发布与排障资料。

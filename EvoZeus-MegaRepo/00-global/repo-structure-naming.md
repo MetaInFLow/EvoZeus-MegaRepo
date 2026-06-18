@@ -65,6 +65,11 @@ EvoZeus-MegaRepo/
     repo-structure-naming.md
     material-index.md
     decision-log.md
+  docs/
+    README.md
+    development-direction/
+    tutorials/
+    reference/
   10-repos/
     evozeus/
     evozeus-community/
@@ -80,6 +85,7 @@ EvoZeus-MegaRepo/
 规则：
 
 - `00-global/` 放跨 repo 的设计、索引、命名、决策。
+- `docs/` 放面向人和 Agent 的介绍、开发方向和 tutorial，不放正式决策底账。
 - `10-repos/` 只放 submodule 或 repo mirror，不放散落资料。
 - `20-materials/` 放外部资料、调研、会议纪要、Feishu 导出。
 - `30-ops/` 放社区试运行、发布操作、迁移脚本、权限执行计划。

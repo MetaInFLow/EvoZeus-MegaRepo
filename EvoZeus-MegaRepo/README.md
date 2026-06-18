@@ -9,6 +9,7 @@
 ## 目录结构
 
 - `00-global/`：全局索引、架构、策略、跨 repo 约定与总览文档。
+- `docs/`：介绍文档、开发方向和各部分 tutorial。
 - `10-repos/`：各业务 repo 的本地工作副本、submodule、mirror 或 repo 索引。
 - `20-materials/`：需求、调研、会议纪要、Feishu 导出资料、客户资料与附件。
 - `30-ops/`：运行维护、脚本、任务记录、发布与排障资料。
@@ -31,6 +32,10 @@
 
 ## 当前核心文档
 
+- [Docs 入口](docs/README.md)
+- [Development Direction](docs/development-direction/README.md)
+- [Tutorials](docs/tutorials/README.md)
+- [Docs Structure](docs/reference/docs-structure.md)
 - [EvoZeus 整体设计](00-global/evozeus-overall-design.md)
 - [Repo Structure And Naming](00-global/repo-structure-naming.md)
 - [Repo Index](00-global/repo-index.md)
@@ -54,3 +59,5 @@ git submodule update --init --recursive
 ```
 
 新增 EvoZeus repo 时，默认放入 `10-repos/`，并同步更新 `00-global/repo-index.md`。
+
+新增教程或开发方向文档时，默认放入 `docs/`，并按 [Docs Structure](docs/reference/docs-structure.md) 更新导航。
