@@ -1,63 +1,139 @@
 # EvoZeus Mega Repo
 
-本空间用于统一处理 EvoZeus 全局所有 repo、资料、运行记录和跨项目决策。
+EvoZeus 的全局协调工作区：定义方向、组织 repo、保存决策、承接资料和维护跨 repo tutorial。
 
-归属：metainflow private  
-定位：EvoZeus 全局工作区 / mega repo
-远程：`https://github.com/MetaInFLow/EvoZeus-MegaRepo.git`
+这个 repo 不是产品入口本身。产品协议入口在 `10-repos/evozeus`；本 repo 是 MetaInFlow 内部用来协调 EvoZeus 全局系统的 operation contract。
 
-## 目录结构
+```text
+direction
+  -> repo topology
+  -> docs / tutorials
+  -> submodule work
+  -> decision log
+```
 
-- `00-global/`：全局索引、架构、策略、跨 repo 约定与总览文档。
-- `docs/`：介绍文档、开发方向和各部分 tutorial。
-- `10-repos/`：各业务 repo 的本地工作副本、submodule、mirror 或 repo 索引。
-- `20-materials/`：需求、调研、会议纪要、Feishu 导出资料、客户资料与附件。
-- `30-ops/`：运行维护、脚本、任务记录、发布与排障资料。
-- `90-archive/`：历史版本、过期资料、冻结项目与不再活跃的上下文。
+## What It Is
 
-## 工作原则
+`EvoZeus-MegaRepo` 是 EvoZeus 的 private mega workspace。
 
-1. 项目产出文件默认使用中文；关键专有名词、专业名词可以保留英文。
-2. Feishu 相关操作统一使用 `larkcli`。
-3. 涉及 private 信息、客户信息、商业资料时，默认只在 metainflow private 范围内处理。
-4. 新增 repo 或资料时，优先补充索引，避免只堆文件不留上下文。
+它负责回答：
 
-## 建议索引
+- EvoZeus 当前开发方向是什么。
+- 每个 repo 承担什么职责。
+- 哪些 repo 应该 public / private。
+- Factor、runtime、community、official release 如何协同。
+- 新资料、会议纪要、Feishu 导出、运营动作应该放哪里。
+- 新人或 agent 应该从哪篇 tutorial 开始。
 
-后续可以在 `00-global/` 中补充：
+## What It Is Not
 
-- `repo-index.md`：记录所有 EvoZeus 相关 repo 的用途、路径、owner、状态。
-- `material-index.md`：记录资料来源、主题、更新时间、敏感级别。
-- `decision-log.md`：记录跨 repo 的关键技术和产品决策。
+本 repo 不承担这些职责：
 
-## 当前核心文档
+- 不替代 `EvoZeus` 主 repo 的 public protocol。
+- 不接收普通社区贡献。
+- 不存 raw private session、客户资料、secret 或未脱敏日志。
+- 不直接发布 official Factor pack。
+- 不直接运行 runtime scanner。
 
-- [Docs 入口](docs/README.md)
-- [Development Direction](docs/development-direction/README.md)
-- [Tutorials](docs/tutorials/README.md)
-- [Docs Structure](docs/reference/docs-structure.md)
-- [EvoZeus 整体设计](00-global/evozeus-overall-design.md)
-- [Repo Structure And Naming](00-global/repo-structure-naming.md)
-- [Repo Index](00-global/repo-index.md)
-- [Decision Log](00-global/decision-log.md)
-- [Material Index](00-global/material-index.md)
+## Start Here
 
-## 当前 Repo 体系
+第一次进入：
 
-- `10-repos/evozeus`：核心 protocol、`SKILL.md`、docs、schemas、governance。
-- `10-repos/evozeus-community`：前端 / 官网 / 社区解释层。
-- `10-repos/evozeus-factor-lab`：Factor 和 scanner 投稿孵化。
-- `10-repos/evozeus-factors-official`：官方 Factor packs、release manifests、checksums、attestations。
-- `10-repos/evozeus-runtime`：未来 runtime，承接 CLI / TUI / local registry / reports / selective install。
+1. 读 [Docs 入口](docs/README.md)。
+2. 读 [Development Direction](docs/development-direction/README.md)。
+3. 按任务进入 [Tutorials](docs/tutorials/README.md)。
+4. 查正式事实时读 [EvoZeus 整体设计](00-global/evozeus-overall-design.md) 和 [Decision Log](00-global/decision-log.md)。
 
-## Submodule
-
-初始化或更新所有 repo：
+初始化所有 submodule：
 
 ```bash
 git submodule update --init --recursive
 ```
 
-新增 EvoZeus repo 时，默认放入 `10-repos/`，并同步更新 `00-global/repo-index.md`。
+给 Agent 的最短指令：
 
-新增教程或开发方向文档时，默认放入 `docs/`，并按 [Docs Structure](docs/reference/docs-structure.md) 更新导航。
+```text
+Read the root README, docs/README.md, and docs/tutorials/README.md. Identify which EvoZeus repo or workspace area owns the task. Do not change submodules without committing inside the child repo first. Do not store raw private evidence.
+```
+
+## Who Should Use This
+
+| Role | Use this repo when | Stop when |
+| --- | --- | --- |
+| Maintainer | 需要跨 repo 决策、submodule 指针、权限设计 | 变更只属于单一业务 repo |
+| Agent | 需要判断任务应该落到哪个 repo / docs / ops | 无法确认 privacy boundary |
+| Operator | 需要整理资料、Feishu 导出、发布或权限计划 | 内容应进入 public main repo |
+| Product owner | 需要定义开发方向或当前优先级 | 决策没有 owner 或 evidence |
+
+## Task Routes
+
+| 你要做什么 | 去哪里 |
+| --- | --- |
+| 查全局设计 | `00-global/evozeus-overall-design.md` |
+| 查 repo 权限和可见性 | `00-global/repo-index.md` |
+| 记录跨 repo 决策 | `00-global/decision-log.md` |
+| 理解开发方向 | `docs/development-direction/README.md` |
+| 找 tutorial | `docs/tutorials/README.md` |
+| 改主 protocol | `10-repos/evozeus` |
+| 改官网 | `10-repos/evozeus-community` |
+| 处理 Factor lab | `10-repos/evozeus-factor-lab` |
+| 发布 official factors | `10-repos/evozeus-factors-official` |
+| 规划 runtime | `10-repos/evozeus-runtime` |
+| 放资料 / Feishu 导出 | `20-materials/` + `00-global/material-index.md` |
+| 放运营 / 发布 / 权限执行 | `30-ops/` |
+
+## Repo Topology
+
+```text
+EvoZeus-MegaRepo
+  -> EvoZeus                 public protocol / governance
+  -> evozeus-community       community surface
+  -> evozeus-factor-lab      Factor pack / scanner incubation
+  -> evozeus-factors-official official Factor release source
+  -> evozeus-runtime         future local runtime
+```
+
+## Trust Contract
+
+本 repo 的默认契约：
+
+- private by default。
+- raw session 不入仓。
+- private customer context 不入仓。
+- repo visibility、权限、release、拆 repo 决策必须写入 `decision-log.md`。
+- submodule 内容先在子 repo 提交，再更新 mega repo 指针。
+- Feishu 相关操作统一使用 `larkcli`。
+
+## Directory Map
+
+| Path | Purpose |
+| --- | --- |
+| `00-global/` | 全局设计、repo index、material index、decision log、命名和目录规则 |
+| `docs/` | 介绍文档、开发方向、tutorial 和文档结构规则 |
+| `10-repos/` | EvoZeus 相关 repo 的 submodule 工作区 |
+| `20-materials/` | 外部资料、调研、会议纪要、Feishu 导出和素材 |
+| `30-ops/` | 社区运营、权限执行、发布操作、迁移和排障记录 |
+| `90-archive/` | 冻结上下文、历史版本和过期资料 |
+
+## Current Status
+
+- Repo visibility: private。
+- Submodules: active。
+- Main public protocol repo: `10-repos/evozeus`。
+- Current docs layer: `docs/`。
+- Current decision source: `00-global/decision-log.md`。
+
+## Not Promised
+
+- 不保证这里的所有 private 决策都已公开同步。
+- 不保证 submodule branch 都是默认可 merge 状态。
+- 不保证资料区内容适合公开。
+- 不保证 runtime 或 official Factor release 已稳定。
+
+## Validation
+
+```bash
+git status --short --branch
+git submodule status
+git diff --check
+```
