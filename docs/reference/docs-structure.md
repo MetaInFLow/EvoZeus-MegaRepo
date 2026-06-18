@@ -14,6 +14,7 @@ docs/
     README.md
   tutorials/
     README.md
+    user-journey.md
     mega-repo-workspace.md
     evozeus-main-repo.md
     community-frontend.md
@@ -23,6 +24,7 @@ docs/
     materials-and-ops.md
   reference/
     docs-structure.md
+    skill-coverage.md
 ```
 
 ## 2. 每层职责
@@ -32,7 +34,7 @@ docs/
 | `docs/README.md` | mega repo 介绍、导航、阅读顺序 | 具体 repo 的长教程 |
 | `development-direction/` | 当前阶段开发方向、优先级、完成标准 | 临时会议纪要、操作流水 |
 | `tutorials/` | 每个部分怎么开始、怎么产出、怎么验证 | 正式决策底账 |
-| `reference/` | 文档结构、命名、维护规则 | 产品方向判断 |
+| `reference/` | 文档结构、命名、维护规则、Skill 覆盖矩阵 | 产品方向判断 |
 | `00-global/` | 正式全局设计、索引、决策记录 | 面向新人阅读的教程正文 |
 | `20-materials/` | 原始资料、调研、导出、会议纪要 | 已整理成正式方向的文档 |
 | `30-ops/` | 运营、权限、发布、迁移、排障 | 产品介绍和 tutorial |

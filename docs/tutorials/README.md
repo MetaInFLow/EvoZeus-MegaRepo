@@ -12,8 +12,9 @@
 | Tutorial | 适合场景 | 产出 |
 | --- | --- | --- |
 | [Mega Repo Workspace](mega-repo-workspace.md) | 第一次进入 mega repo，需要知道从哪里改 | 正确定位 docs、global、repos、materials、ops |
+| [User Journey](user-journey.md) | 要理解从注册、Start Here 到 judgment、沉淀和开发分流 | 用户旅程和 repo 路由判断 |
 | [EvoZeus 主 Repo](evozeus-main-repo.md) | 要改 protocol、docs、schema、governance 或贡献入口 | 小范围主 repo 变更和验证 |
-| [Community Frontend](community-frontend.md) | 要推进官网、社区解释层、public docs surface | 内容或前端变更路线 |
+| [Community Frontend](community-frontend.md) | 要推进官网部署面、社区解释层、`/skill` 路由 | private Web 源码变更和公开内容同步路线 |
 | [Factor Lab](factor-lab.md) | 要处理 Factor pack / scanner module 投稿 | lab submission / reviewed / rejected 记录 |
 | [Official Factors](official-factors.md) | 要发布 maintainer-promoted Factor pack | manifest、checksum、attestation 和 registry PR |
 | [Runtime](runtime.md) | 要规划或实现 future CLI/TUI/local registry | trust-first runtime 变更 |

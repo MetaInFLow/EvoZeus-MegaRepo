@@ -5,7 +5,7 @@
 - Source reference: `larksuite/cli` at https://github.com/larksuite/cli
 - Scope: EvoZeus repo 命名、目录结构、skill/factor/runtime 文件组织
 
-本文借鉴 `larksuite/cli` 的结构纪律，但不照搬其 Go CLI 目录。EvoZeus 当前首先是 protocol / governance / evidence system，不是成熟 CLI 产品。
+本文借鉴 `larksuite/cli` 的结构纪律，但不照搬其 Go CLI 目录。EvoZeus 主 repo 当前采用 Protocol-only 边界：首先是 protocol / governance / evidence system / registry pointer，不是成熟 CLI 产品，也不是 runtime implementation repo。
 
 ## 1. 从 larksuite/cli 借鉴什么
 
@@ -33,7 +33,7 @@ GitHub repo 命名建议：
 | Repo | 建议名称 | 说明 |
 | --- | --- | --- |
 | 主协议 repo | `EvoZeus` | 保留品牌大小写，作为 public canonical repo |
-| 官网 / 社区入口 | `evozeus-community` | 建议在 public launch 前从 `EvoZeus-community` 统一为 lower kebab-case |
+| 官网 / 社区入口源码 | `evozeus-community` | Web 源码保持 private；如未来重命名，可从 `EvoZeus-community` 统一为 lower kebab-case |
 | Factor lab | `evozeus-factor-lab` | 已符合规则 |
 | Official packs | `evozeus-factors-official` | 已符合规则 |
 | Runtime | `evozeus-runtime` | 已符合规则 |
@@ -42,7 +42,7 @@ GitHub repo 命名建议：
 
 命名原则：
 
-- public satellite repo 统一 lower kebab-case：`evozeus-<surface>`。
+- public satellite repo 统一 lower kebab-case：`evozeus-<surface>`；private Web source repo 也可采用同样命名以降低认知成本。
 - public canonical product repo 可保留品牌名：`EvoZeus`。
 - 不在 repo 名里使用 `repo`、`new`、`temp`、`v2`、`final`。
 - 用单数还是复数看资产类型：
@@ -93,7 +93,19 @@ EvoZeus-MegaRepo/
 
 ## 4. EvoZeus 主 repo 目录
 
-定位：public canonical protocol / governance / community intake repo。
+定位：public canonical protocol / governance / community intake / registry pointer repo。
+
+生命周期职责：
+
+| 主 repo 拥有 | 主 repo 不拥有 |
+| --- | --- |
+| `SKILL.md` zero-install entry | CLI / TUI / companion / local API |
+| ontology、evidence、verdict、review contract | scanner implementation |
+| Case / Candidate intake 和 lifecycle | installable Factor pack / scanner pack |
+| semantic Factor / Skill / Pattern proposal | `.evozeus/` local state、SQLite ledger、lockfile |
+| official release manifest pointer / registry reference | report execution、pack execution、upload / network runtime |
+
+当前 `10-repos/evozeus/__infra__` 与目标职责不一致，应视为待迁移 prototype / reference material。迁移完成前，它不应成为默认用户入口、安装源或 official runtime contract；迁移完成后，执行层归 `evozeus-runtime`，pack / scanner 资产归 Factor lifecycle repo。
 
 建议结构：
 
@@ -174,8 +186,10 @@ EvoZeus/
 不建议新增：
 
 - `cmd/`：主 repo 不是 runtime。
-- `internal/`：主 repo 当前没有稳定实现边界。
+- `internal/`：主 repo 不承接 runtime implementation。
 - `shortcuts/`：等 runtime/CLI 阶段再用。
+- `__infra__/`：只作为当前迁移源存在，不属于目标结构。
+- `factor_packs/` / `scanner_packs/`：installable pack 不放主 repo。
 
 ## 5. Skill 目录命名
 
@@ -306,7 +320,7 @@ evozeus-factors-official/
 
 ## 8. Runtime 目录
 
-定位：未来 CLI/TUI/local registry/report/selective install runtime。
+定位：未来 CLI/TUI/local registry/report/selective install runtime。它承接所有需要执行、安装、扫描、生成本地 report、维护 local state 或暴露 local API 的能力。
 
 借鉴 `larksuite/cli`，但等 runtime 语言和发布方式稳定后再落地。
 
@@ -357,10 +371,11 @@ evozeus-runtime/
 - 内部模块用能力名：`scanner`、`policy`、`lockfile`、`output`。
 - 不在 runtime repo 放未 reviewed 的 skill/factor 投稿。
 - runtime 只消费主 registry 和 official release manifest。
+- runtime 可以在 trust policy 稳定后承接从 `EvoZeus/__infra__` 迁出的 prototype 代码，但迁移后的代码必须重新经过 permission、sandbox、dependency 和 public install gate。
 
 ## 9. Community 目录
 
-定位：官网、public docs surface、Discord / contribution route 入口。
+定位：官网源码、public deployed surface、Discord / contribution route 入口。源码 private，页面输出 public。
 
 建议结构：
 
@@ -392,15 +407,17 @@ evozeus-community/
 不建议一次性重排所有目录。建议按风险从低到高：
 
 1. 在 mega repo 落地本命名规范。
-2. 在 `EvoZeus` 主 repo 新增 `templates/` 和 `quality-gates/`，先只放 README / 草案。
-3. 给重型 scenario skills 增加 `references/`，不改 skill 行为。
-4. 补 `evozeus-factor-lab` 的 `domains/`、`schemas/`、`checks/`。
-5. 等 runtime 技术栈确定后，再引入 `cmd/internal` 或 `packages/*`。
-6. public launch 前，考虑把 `EvoZeus-community` 重命名为 `evozeus-community`。
+2. 在全局文档中确认 `EvoZeus` 主 repo Protocol-only，标记 `__infra__` 为待迁移 prototype。
+3. 在 `EvoZeus` 主 repo 新增 `templates/` 和 `quality-gates/`，先只放 README / 草案。
+4. 给重型 scenario skills 增加 `references/`，不改 skill 行为。
+5. 补 `evozeus-factor-lab` 的 `domains/`、`schemas/`、`checks/`。
+6. 等 runtime 技术栈确定后，在 `evozeus-runtime` 引入 `cmd/internal` 或 `packages/*`，并迁移主 repo prototype。
+7. 需要统一命名时，考虑把 `EvoZeus-community` 重命名为 `evozeus-community`；这不改变源码 private 策略。
 
 ## 11. 当前判断
 
 - 先不新建 `evozeus-skills`。
 - 先不把 `cmd/`、`shortcuts/`、`internal/` 引入主 repo。
+- `EvoZeus` 主 repo 不再被定义为 runtime 或 reference implementation repo；`__infra__` 是迁移源，不是目标职责。
 - 可以立即采用 lower kebab-case 的新增目录和 future repo 命名。
 - 可以立即把 skill 内长文档拆到 `references/`，借鉴 `larksuite/cli` 的 progressive disclosure。

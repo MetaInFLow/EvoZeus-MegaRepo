@@ -2,13 +2,13 @@
 
 ## 目标
 
-理解 `10-repos/evozeus-community` 的作用：它是官网、社区解释层和 public docs surface，不是正式治理入口本身。
+理解 `10-repos/evozeus-community` 的作用：它是官网源码、社区解释层和 public deployed surface 的实现仓库，不是正式治理入口本身，也不是 public source repo。
 
 ## 适合谁
 
 - 要写官网内容的人。
 - 要把 Discord / GitHub contribution route 讲清楚的人。
-- 要做 public launch 前检查的人。
+- 要做 public deployed surface 发布前检查的人。
 
 ## 前置条件
 
@@ -25,7 +25,7 @@
    - Case / Candidate / Factor：主 repo issue / PR。
    - Factor pack / scanner：maintainer route 到 factor lab。
    - Governance：主 repo RFC / governance PR。
-3. 不在官网收 raw evidence，不在页面里放 private context。
+3. 不在官网收 raw evidence，不在页面里放 private context，也不把 private Web 源码当成公开协议资产来源。
 4. 如果链接了 Discord，要说明 Discord 是 PR 前缓冲层，不替代 GitHub governance。
 5. 修改后运行前端仓库自己的 build / test / lint。
 
@@ -39,6 +39,7 @@
 - 不要让官网变成新的贡献系统。
 - 不要绕过主 repo 的 privacy / proof / schema gate。
 - 不要把部署 secret 写进 repo。
+- 不要把 Web 源码改成 public；用户需要直接复核的内容应同步到 public `EvoZeus` 或公开部署面。
 
 ## 验证
 

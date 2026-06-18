@@ -41,7 +41,7 @@
 
 | 目录 | 作用 |
 | --- | --- |
-| `reference/` | 维护文档结构、命名规则和文档责任边界 |
+| `reference/` | 维护文档结构、命名规则、文档责任边界和 Skill 覆盖矩阵 |
 
 ## 3. 先读什么
 
@@ -65,14 +65,16 @@ flowchart TB
   B --> B3["优先级与完成标准"]
 
   C --> C1["mega repo workspace"]
-  C --> C2["EvoZeus 主 repo"]
-  C --> C3["community frontend"]
-  C --> C4["factor lab"]
-  C --> C5["official factors"]
-  C --> C6["runtime"]
-  C --> C7["materials / ops"]
+  C --> C2["user journey"]
+  C --> C3["EvoZeus 主 repo"]
+  C --> C4["community frontend"]
+  C --> C5["factor lab"]
+  C --> C6["official factors"]
+  C --> C7["runtime"]
+  C --> C8["materials / ops"]
 
   D --> D1["docs-structure.md"]
+  D --> D2["skill-coverage.md"]
 ```
 
 ## 5. 维护规则
