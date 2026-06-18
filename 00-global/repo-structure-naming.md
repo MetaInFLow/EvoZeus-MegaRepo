@@ -1,7 +1,7 @@
 # EvoZeus Repo Structure And Naming
 
 - Status: draft
-- Last updated: 2026-06-18
+- Last updated: 2026-06-19
 - Source reference: `larksuite/cli` at https://github.com/larksuite/cli
 - Scope: EvoZeus repo 命名、目录结构、skill/factor/runtime 文件组织
 
@@ -35,7 +35,7 @@ GitHub repo 命名建议：
 | 主协议 repo | `EvoZeus` | 保留品牌大小写，作为 public canonical repo |
 | 官网 / 社区入口源码 | `evozeus-community` | Web 源码保持 private；如未来重命名，可从 `EvoZeus-community` 统一为 lower kebab-case |
 | Factor lab | `evozeus-factor-lab` | 已符合规则 |
-| Official packs | `evozeus-factors-official` | 已符合规则 |
+| Official Factor contract | `evozeus-factors-official` | 已符合规则；official 指稳定 contract，不指 pack 仓库 |
 | Runtime | `evozeus-runtime` | 已符合规则 |
 | Private workspace | `EvoZeus-MegaRepo` 或未来 `evozeus-workspace` | 当前可保留；若希望减少内部感，后续可改名为 `evozeus-workspace` |
 | Future skill distribution | `evozeus-skills` | deferred，不创建；只在 reviewed/core Skills 需要独立安装时使用 |
@@ -46,8 +46,8 @@ GitHub repo 命名建议：
 - public canonical product repo 可保留品牌名：`EvoZeus`。
 - 不在 repo 名里使用 `repo`、`new`、`temp`、`v2`、`final`。
 - 用单数还是复数看资产类型：
-  - `factor-lab`：一个孵化空间，单数 lab。
-  - `factors-official`：多个 released factors/packs，复数 factors。
+  - `factor-lab`：一个 Factor contract 实验室，单数 lab。
+  - `factors-official`：官方稳定 Factor contract 和 examples，复数 factors。
   - `runtime`：一个运行时产品面，单数 runtime。
   - `skills`：未来多个可安装 skills，复数 skills。
 
@@ -103,9 +103,9 @@ EvoZeus-MegaRepo/
 | ontology、evidence、verdict、review contract | scanner implementation |
 | Case / Candidate intake 和 lifecycle | installable Factor pack / scanner pack |
 | semantic Factor / Skill / Pattern proposal | `.evozeus/` local state、SQLite ledger、lockfile |
-| official release manifest pointer / registry reference | report execution、pack execution、upload / network runtime |
+| factor source pointer / registry reference | report execution、pack execution、upload / network runtime |
 
-旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-runtime`，pack / scanner 资产归 Factor lifecycle repo；主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
+旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-runtime`；`factor-lab` / `factors-official` 只负责 Factor contract，不负责 installable pack 或 scanner pack。主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
 
 建议结构：
 
@@ -232,7 +232,7 @@ skills/evozeus-<scenario>/
 
 ## 6. Factor Lab 目录
 
-定位：Factor pack / scanner module 孵化层，不是普通 Case 入口。
+定位：Python Factor contract lab，不是普通 Case 入口、pack 孵化层或 scanner module 仓库。
 
 建议结构：
 
@@ -240,46 +240,33 @@ skills/evozeus-<scenario>/
 evozeus-factor-lab/
   AGENTS.md
   README.md
-  submissions/
-    <author-or-org>/
-      <factor-id>/
-        factor.yaml
-        evidence.md
-        privacy.md
-        examples/
-        scanner/
-  reviewed/
-    <domain>/
-      <factor-id>/
-  rejected/
-    <domain>/
-      <factor-id>/
-        rejection.md
-  domains/
-    agent-behavior.md
-    tool-use.md
-    privacy.md
-    environment.md
-    runtime.md
-  templates/
-    factor-submission.md
-    scanner-submission.md
-    evidence-report.md
-    rejection-record.md
+  pyproject.toml
+  src/
+    evozeus_factor_lab/
+      __init__.py
+      factor.py
   schemas/
-  checks/
+    factor-spec.schema.json
+  examples/
+    factors/
+    specs/
+    sessions/
+  scripts/
+    validate_factor_spec.py
+  tests/
 ```
 
 命名规则：
 
-- `factor-id` 用 lower kebab-case：`tool-resolution-proof`。
-- domain 用稳定判断领域：`tool-use`、`privacy`、`environment`、`agent-behavior`、`runtime`。
-- scanner module 目录必须叫 `scanner/`，不要混在 factor metadata 里。
-- rejected 记录保留为 first-class asset，不叫 `trash/` 或 `old/`。
+- Python package 使用 `evozeus_factor_lab`。
+- 抽象类命名为 `AbstractFactor`。
+- example factor 用 snake_case 文件名：`repeated_request.py`。
+- JSON spec example 用 dot/kebab id：`repeated-request.factor.json`。
+- 不创建 `submissions/`、`reviewed/`、`rejected/`、`packs/`、`manifests/`。
 
 ## 7. Official Factors 目录
 
-定位：official release source，用户可审计。
+定位：官方稳定 Python Factor contract，用户可审计。
 
 建议结构：
 
@@ -287,36 +274,28 @@ evozeus-factor-lab/
 evozeus-factors-official/
   AGENTS.md
   README.md
-  packs/
-    <pack-id>/
-      README.md
-      pack.yaml
-      factors/
-      examples/
-      tests/
-  manifests/
-    releases/
-      <pack-id>/
-        v0.1.0.yaml
-    index.yaml
-  checksums/
-    <pack-id>/
-      v0.1.0.sha256
-  attestations/
-    <pack-id>/
-      v0.1.0.sbom.json
-      v0.1.0.attestation.json
+  pyproject.toml
+  src/
+    evozeus_factors_official/
+      __init__.py
+      factor.py
   schemas/
+    official-factor-spec.schema.json
+  examples/
+    factors/
+    specs/
+    sessions/
   scripts/
-    verify-release.sh
+    validate_official_factor_spec.py
+  tests/
 ```
 
 命名规则：
 
-- pack id 用 `evozeus-<domain>-pack`：`evozeus-tool-use-pack`。
-- release manifest 用 semver：`v0.1.0.yaml`。
-- checksum / SBOM / attestation 和 tag 同名。
-- 不引用 lab branch，只引用 tag 或 immutable artifact。
+- Python package 使用 `evozeus_factors_official`。
+- 抽象类命名为 `OfficialFactor`。
+- official spec 必须包含 `stability: official`、`compatibility` 和 `governance.owner`。
+- 不放 pack release、manifest、checksum、SBOM、attestation 或 promotion queue。
 
 ## 8. Runtime 目录
 
@@ -369,8 +348,8 @@ evozeus-runtime/
 
 - CLI 命令面用任务名：`judge`、`report`、`install`、`doctor`、`registry`。
 - 内部模块用能力名：`scanner`、`policy`、`lockfile`、`output`。
-- 不在 runtime repo 放未 reviewed 的 skill/factor 投稿。
-- runtime 只消费主 registry 和 official release manifest。
+- 不在 runtime repo 放 Factor contract 草案；contract 属于 factor repos。
+- runtime 只消费主 registry pointer、用户批准的 factor source 和 Python Factor contract。
 - runtime 可以在 trust policy 稳定后承接旧主 repo prototype 的设计意图，但实现必须在本 repo 重新经过 permission、sandbox、dependency 和 public install gate。
 
 ## 9. Community 目录
@@ -410,7 +389,7 @@ evozeus-community/
 2. 在全局文档中确认 `EvoZeus` 主 repo Protocol-only，并保持无执行层结构。
 3. 在 `EvoZeus` 主 repo 新增 `templates/` 和 `quality-gates/`，先只放 README / 草案。
 4. 给重型 scenario skills 增加 `references/`，不改 skill 行为。
-5. 补 `evozeus-factor-lab` 的 `domains/`、`schemas/`、`checks/`。
+5. 补 `evozeus-factor-lab` 的 Python `AbstractFactor`、schema、examples、tests。
 6. 等 runtime 技术栈确定后，在 `evozeus-runtime` 引入 `cmd/internal` 或 `packages/*`，并按权限模型重建 runtime 能力。
 7. 需要统一命名时，考虑把 `EvoZeus-community` 重命名为 `evozeus-community`；这不改变源码 private 策略。
 

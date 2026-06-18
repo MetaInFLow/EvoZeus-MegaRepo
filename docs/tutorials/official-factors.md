@@ -2,47 +2,48 @@
 
 ## 目标
 
-理解 `10-repos/evozeus-factors-official` 如何发布 maintainer-promoted official Factor packs。
+理解 `10-repos/evozeus-factors-official` 如何维护稳定 Python `OfficialFactor` contract、官方 spec 和 canonical examples。
 
 ## 适合谁
 
-- release operator。
-- Factor maintainer。
-- security reviewer。
+- Factor contract maintainer。
+- 需要稳定官方 API 的 runtime 开发者。
+- 需要确认 FactorResult shape 的 reviewer。
 
 ## 前置条件
 
 先读：
 
 - `../../10-repos/evozeus-factors-official/README.md`
-- `../../10-repos/evozeus-factors-official/manifests/README.md`
-- `../../10-repos/evozeus-factors-official/scripts/README.md`
-- factor lab 中对应 reviewed asset。
+- `../../10-repos/evozeus-factors-official/SKILL.md`
+- `../../10-repos/evozeus-factors-official/src/evozeus_factors_official/factor.py`
 
 ## 操作步骤
 
-1. 确认来源是 `evozeus-factor-lab/reviewed/...`，不是普通投稿或 moving private branch。
-2. 在 `packs/<pack-id>/` 准备 pack 内容。
-3. 在 `manifests/releases/<pack-id>/<version>.yaml` 准备 release manifest。
-4. 在 `checksums/<pack-id>/<version>.sha256` 准备 checksum。
-5. 在 `attestations/<pack-id>/` 准备 SBOM / attestation。
-6. release PR 通过 review 后打 tag。
-7. 用 stable manifest reference 更新 `EvoZeus` main registry。
+1. 判断变更是否属于 official contract，而不是业务 factor pack release。
+2. 修改 Python `OfficialFactor` 抽象类。
+3. 同步修改 `schemas/official-factor-spec.schema.json`。
+4. 更新 `examples/factors/` 中的 canonical Python examples。
+5. 更新 `examples/specs/` 中的官方 spec 示例。
+6. 运行 tests 和 spec validator。
 
 ## 产出
 
-- 一个可审计 official release。
-- 一个可被主 repo registry 引用的 stable manifest。
+- 稳定官方 Python Factor 抽象类。
+- 官方 Factor spec schema。
+- canonical examples 和测试向量。
 
 ## 不要做
 
-- 不要从 lab branch 直接发布。
-- 不要无 checksum / SBOM / attestation 发布 scanner 或可执行 pack。
-- 不要静默覆盖已经发布的 checksum。
+- 不要放真实业务 Factor pack。
+- 不要放 release manifest、checksum、SBOM 或 attestation。
+- 不要把本 repo 当 runtime 安装源。
+- 不要记录 lab promotion state。
 
 ## 验证
 
 ```bash
 git diff --check
-node -e "JSON.parse(require('fs').readFileSync('schemas/release-manifest.schema.json','utf8')); console.log('release manifest schema json ok')"
+python3 -m unittest discover -s tests
+python3 scripts/validate_official_factor_spec.py examples/specs/*.json
 ```
