@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解 `10-repos/evozeus-runtime` 的未来边界：CLI / TUI / local registry / report generation / selective install。当前阶段先设计 trust policy，不抢跑默认执行能力；后续如迁移 `EvoZeus/__infra__` prototype，也必须按 runtime 权限模型重新审查。
+理解 `10-repos/evozeus-runtime` 的未来边界：CLI / TUI / local registry / report generation / selective install。当前阶段先设计 trust policy，不抢跑默认执行能力；旧主 repo runtime prototype 的设计材料已移入 runtime docs，后续实现必须按 runtime 权限模型重新审查。
 
 ## 适合谁
 
@@ -36,14 +36,14 @@
 3. 默认 local-first，不自动上传 raw session。
 4. scanner / factor code / MCP / LLM / visualization pack 必须显式启用。
 5. runtime 不直接消费 Discord thread、lab moving branch 或未审 submission。
-6. 从 `EvoZeus/__infra__` 迁出的代码必须重新声明权限、依赖、sandbox、默认关闭行为和 public install gate。
+6. 任何从旧 prototype 设计意图延伸出的代码，都必须重新声明权限、依赖、sandbox、默认关闭行为和 public install gate。
 
 ## 产出
 
 - trust policy。
 - permission model。
 - local registry / report / scanner 的最小可执行设计。
-- prototype migration plan，如果本次工作涉及 `EvoZeus/__infra__`。
+- runtime migration / rebuild plan，如果本次工作涉及旧 prototype 能力。
 - 后续可落到 CLI/TUI 的命令设计。
 
 ## 不要做

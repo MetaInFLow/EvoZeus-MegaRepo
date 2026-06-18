@@ -18,16 +18,17 @@ EvoZeus 当前处在 **protocol-first + community-intake-first + protocol-only-b
 - 让 `EvoZeus-community` 的部署面成为 public-facing 解释层和社区入口，但 Web 源码保持 private。
 - Factor 不直接塞进主 repo；按 lifecycle 拆到 `evozeus-factor-lab` 和 `evozeus-factors-official`。
 - `evozeus-runtime` 暂时不抢跑，等 registry、trust policy、scanner permission model 稳定后再进入可执行产品面。
-- 现有 `10-repos/evozeus/__infra__` 视为待迁移 prototype / reference material，不作为主 repo 的默认用户入口、安装源或 official runtime contract。
+- 主 repo 的旧执行层遗留已清理；runtime 设计材料已移至 `10-repos/evozeus-runtime/docs/`，scanner / runner prototype 已移至 `10-repos/evozeus-runtime/prototypes/main-repo-runtime/`，不作为主 repo 的默认用户入口、安装源或 official runtime contract。
 
 ## 2. 开发方向
 
 | 方向 | 当前优先级 | 目标 |
 | --- | --- | --- |
 | Protocol / Governance | P0 | 主 repo 的核心语义、贡献路径、review gate、privacy gate 和 registry pointer 稳定 |
-| Community Surface | P0 | 官网部署面和 `/skill` 能解释 EvoZeus，并把贡献导向 public 主 repo；源码保持 private |
+| Community Surface | P0 | 官网部署面和 `/skill` 能解释 EvoZeus，并把注册安装导向 public 主 repo；源码保持 private |
+| Skill System Closure | P0 | `/skill`、注册安装、scenario skills、component handoff 和 validator 形成闭环 |
 | Factor Lifecycle | P1 | Factor Candidate、lab、official release、registry pointer 的流转清晰 |
-| Runtime Trust | P1 | 明确 local-first、opt-in scanner、permission、manifest、checksum、attestation 规则，并准备从主 repo prototype 迁移 |
+| Runtime Trust | P1 | 明确 local-first、opt-in scanner、permission、manifest、checksum、attestation 规则，并在 `evozeus-runtime` 承接实现 |
 | Tutorials / Onboarding | P1 | 每个部分都有可跟随的入门教程，降低 Agent 和新人进入成本 |
 | Automation / CI | P2 | 把已经稳定的手工门禁沉淀为脚本或 CI |
 
@@ -45,11 +46,12 @@ EvoZeus 当前处在 **protocol-first + community-intake-first + protocol-only-b
 ## 4. 当前执行顺序
 
 1. 稳定主 repo 的 Protocol-only 边界：protocol、Candidate schema、PR routing、privacy、proof gates、registry pointer。
-2. 把社区入口讲清楚：官网、Discord 缓冲层、GitHub issue / PR 路线。
-3. 标记 `10-repos/evozeus/__infra__` 为待迁移 prototype，不再把它计入主 repo 目标职责。
-4. 补齐 Factor lab 的 public gate：submission template、redaction rule、scanner permission policy、secret/license scan；用户投稿前 repo 必须 public / PR-gated。
-5. 用第一个 reviewed Factor pack 跑通 official release：tag、manifest、checksum、SBOM/attestation、main registry pointer；用户或 runtime 可消费前 repo 必须 public。
-6. 等 trust policy 稳定后，在 `evozeus-runtime` 启动可执行能力和 prototype 迁移；用户可安装前 repo 必须 public。
+2. 收敛 Skill 体系：按 [Skill System Implementation Plan](skill-system-implementation.md) 修正 `/skill`、注册安装 owner、runtime skill 命名冲突、route precedence 和 cluster validator。
+3. 把社区入口讲清楚：官网、Discord 缓冲层、GitHub issue / PR 路线。
+4. 保持 `EvoZeus` 主 repo 无执行层结构；runtime 文档和未来实现落在 `evozeus-runtime`。
+5. 补齐 Factor lab 的 public gate：submission template、redaction rule、scanner permission policy、secret/license scan；用户投稿前 repo 必须 public / PR-gated。
+6. 用第一个 reviewed Factor pack 跑通 official release：tag、manifest、checksum、SBOM/attestation、main registry pointer；用户或 runtime 可消费前 repo 必须 public。
+7. 等 trust policy 稳定后，在 `evozeus-runtime` 启动可执行能力；用户可安装前 repo 必须 public。
 
 ## 5. 完成标准
 

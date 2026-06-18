@@ -5,17 +5,18 @@
 - Scope: EvoZeus 用户旅程和 component repo 的 Skill 覆盖矩阵
 - Owner: MetaInFlow
 
-本文记录从 `community/#register` 到 judgment、沉淀和开发分流的 Skill 覆盖。它不是 release checklist；release checklist 仍属于各 component repo。
+本文记录从 `evozeus-community /skill` 到 registration、install、judgment、沉淀和开发分流的 Skill 覆盖。它不是 release checklist；release checklist 仍属于各 component repo。
 
 ## 1. 用户旅程覆盖
 
 | Step | 目标 | Skill / 入口 | 状态 |
 | --- | --- | --- | --- |
-| Register | 用户从 community 复制 Start Here | `evozeus-community` page + `EvoZeus/skills/evozeus-start-here-onboarding` | covered |
-| Start Here | 激活 skeleton，不静默安装 | `EvoZeus/SKILL.md` | covered |
+| Registration guide | 用户从 community `/skill` 复制安装指令 | `evozeus-community` page | covered |
+| Install / reconcile | 检查 `.evozeus`，注册或恢复，安装 skeleton 和 skills | `EvoZeus/skills/evozeus-install-registration` | covered |
+| Start Here | 安装后的首次 protocol-only judgment | `EvoZeus/skills/evozeus-start-here-onboarding` + `EvoZeus/SKILL.md` | covered |
 | Scenario routing | 选择 runtime、report、redaction、contribution、development 等场景 | `EvoZeus/skills/index/SKILL.md` | covered |
 | First judgment | 在回复中输出 Session Verdict Card | `EvoZeus/SKILL.md` + `evozeus-reporting` | covered |
-| Runtime approval | 用户确认本地执行、读取、写入、安装和网络行为 | `EvoZeus/skills/evozeus-runtime` + `evozeus-runtime/SKILL.md` | covered as policy |
+| Runtime approval | 用户确认本地执行、读取、写入、安装和网络行为 | `EvoZeus/skills/evozeus-runtime-routing` + `evozeus-runtime/SKILL.md` | covered as policy |
 | Default official factors | 从 registry pointer 解析 default official factors | `evozeus-registry-release` + `evozeus-runtime/SKILL.md` + `evozeus-runtime/test:runtime-contract` | covered as test contract |
 | Official release verification | 校验 manifest、checksum、SBOM / attestation | `evozeus-factors-official/SKILL.md` + `evozeus-factors-official/test:release-contract` | covered as test contract |
 | Local runtime execution | 扫描、运行 factors、生成 report、写 lockfile | `evozeus-runtime/SKILL.md` + `evozeus-runtime/test:infra-components` | component availability covered; product implementation still future |
@@ -31,7 +32,8 @@
 | Skill | 职责 | 不做什么 |
 | --- | --- | --- |
 | `SKILL.md` | root skeleton、zero-install judgment、Verdict routing | 不静默安装、不写 `.evozeus/`、不 GitHub |
-| `evozeus-start-here-onboarding` | community registration / Start Here 首次进入 | 不扫描、不安装、不写文件 |
+| `evozeus-install-registration` | `.evozeus` registration、skeleton install、skills install、install report | 不运行 judgment、不启用 runtime |
+| `evozeus-start-here-onboarding` | 安装后的首次 protocol-only judgment | 不注册、不安装、不写 runtime state |
 | `index` | scenario router | 不替代具体 Skill |
 | `evozeus-reporting` | Evidence Report、Session Verdict Card、Case summary | 不发布 raw evidence |
 | `evozeus-artifact-preservation` | Verdict -> Artifact -> repo route | 不处理 runtime implementation |
@@ -40,8 +42,8 @@
 | `evozeus-factor-authoring` | semantic Factor quality | 不承接 executable pack code |
 | `evozeus-scanner-pack-authoring` | executable pack / scanner lab route | 不发布 official release |
 | `evozeus-registry-release` | registry pointer、default official factors、release reference | 不存 pack body |
-| `evozeus-runtime` | runtime route and trust policy from main repo context | 不实现 runtime in main repo |
-| `evozeus-development` | protocol/governance/docs development | 不扩展 `__infra__` as product runtime |
+| `evozeus-runtime-routing` | runtime route and trust policy from main repo context | 不实现 runtime in main repo |
+| `evozeus-development` | protocol/governance/docs development | 不把 runtime implementation 加回主 repo |
 | `evozeus-doctor-debugging` | failure diagnosis and environment classification | 不把环境问题误升为 Skill |
 | `evozeus-skill-proposal` | Skill changes and instruction governance | 不为一次性经验创建 Skill |
 
