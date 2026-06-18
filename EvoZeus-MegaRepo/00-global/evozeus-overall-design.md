@@ -178,7 +178,37 @@ flowchart LR
 - `evozeus-runtime` 只消费 registry 和 release manifest，不直接消费 Discord thread 或 lab moving branch。
 - raw private session、客户资料、secret、内部路径、未脱敏日志不进入任何 public repo。
 
-### 4.3 Repo 可见性和权限模型
+### 4.3 Factor Repo 拆分设计
+
+主 repo 里原有 `factors/` 表达的是公共语义和贡献入口，不应继续承担完整 Factor library、scanner module 或 official pack 发布职责。
+
+拆分后的职责：
+
+| 层级 | Repo / 路径 | 职责 | 不做什么 |
+| --- | --- | --- | --- |
+| Public intake | `EvoZeus` issue / Candidate PR | 接收 Factor Candidate、evidence、counterexample、review target | 不接收 raw session、scanner code、未审 pack |
+| Registry surface | `EvoZeus/factors/` 和未来 main registry | 保存 Factor 语义说明、stable pointer、official manifest reference | 不追踪 lab branch，不作为安装源 |
+| Incubation | `evozeus-factor-lab` | 承接 Factor pack、scanner module、reviewed/rejected、domain、template、schema、checks | 不发布 official pack，不替代主 repo intake |
+| Official release | `evozeus-factors-official` | 发布 maintainer-promoted packs、manifest、checksum、SBOM/attestation | 不接收未经 lab review 的普通投稿 |
+| Runtime consumption | `evozeus-runtime` | 未来选择性安装和执行 official pack | 不直接消费 Discord thread 或 lab moving branch |
+
+拆分后的资产流：
+
+```mermaid
+flowchart LR
+  A["Factor proposal<br/>EvoZeus issue / Candidate PR"] --> B{"Maintainer route"}
+  B --> C["Semantic-only Factor<br/>EvoZeus registry pointer"]
+  B --> D["Pack / scanner candidate<br/>evozeus-factor-lab/submissions"]
+  D --> E["reviewed / rejected<br/>lab record"]
+  E --> F["promotion PR<br/>evozeus-factors-official"]
+  F --> G["tagged release<br/>manifest + checksum + attestation"]
+  G --> H["EvoZeus main registry<br/>stable manifest reference"]
+  H --> I["evozeus-runtime<br/>selective install"]
+```
+
+这个设计保留主 repo 作为社区共创正式入口，同时避免把未审可执行代码、供应链风险和 official release 责任混进 public protocol repo。
+
+### 4.4 Repo 可见性和权限模型
 
 设计原则：
 
