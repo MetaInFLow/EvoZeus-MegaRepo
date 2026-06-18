@@ -27,6 +27,7 @@ EvoZeus 当前处在 **protocol-first + community-intake-first + protocol-only-b
 | Protocol / Governance | P0 | 主 repo 的核心语义、贡献路径、review gate、privacy gate 和 registry pointer 稳定 |
 | Community Surface | P0 | 官网部署面和 `/skill` 能解释 EvoZeus，并把注册安装导向 public 主 repo；源码保持 private |
 | Skill System Closure | P0 | `/skill`、注册安装、scenario skills、component handoff 和 validator 形成闭环 |
+| Infra Local Execution Kernel | P1 | 按 [Infra Local Execution Kernel 开发标准](infra-local-execution-kernel-development-standard.md) 将旧 `__infra__` 拆成可验证的本地执行内核 |
 | Factor Lifecycle | P1 | Factor Candidate、lab、official release、registry pointer 的流转清晰 |
 | Runtime Trust | P1 | 明确 local-first、opt-in scanner、permission、manifest、checksum、attestation 规则，并在 `evozeus-runtime` 承接实现 |
 | Tutorials / Onboarding | P1 | 每个部分都有可跟随的入门教程，降低 Agent 和新人进入成本 |
@@ -49,9 +50,10 @@ EvoZeus 当前处在 **protocol-first + community-intake-first + protocol-only-b
 2. 收敛 Skill 体系：按 [Skill System Implementation Plan](skill-system-implementation.md) 修正 `/skill`、注册安装 owner、runtime skill 命名冲突、route precedence 和 cluster validator。
 3. 把社区入口讲清楚：官网、Discord 缓冲层、GitHub issue / PR 路线。
 4. 保持 `EvoZeus` 主 repo 无执行层结构；runtime 文档和未来实现落在 `evozeus-runtime`。
-5. 补齐 Factor lab 的 public gate：submission template、redaction rule、scanner permission policy、secret/license scan；用户投稿前 repo 必须 public / PR-gated。
-6. 用第一个 reviewed Factor pack 跑通 official release：tag、manifest、checksum、SBOM/attestation、main registry pointer；用户或 runtime 可消费前 repo 必须 public。
-7. 等 trust policy 稳定后，在 `evozeus-runtime` 启动可执行能力；用户可安装前 repo 必须 public。
+5. 按 [Infra Local Execution Kernel 开发标准](infra-local-execution-kernel-development-standard.md) 拆迁旧 `__infra__`：先 workspace/config/lockfile，再 SQLite ledger，再 scanner/resolver、factor runner、scan/analyze service 和 CLI/TUI/companion/report。
+6. 补齐 Factor lab 的 public gate：submission template、redaction rule、scanner permission policy、secret/license scan；用户投稿前 repo 必须 public / PR-gated。
+7. 用第一个 reviewed Factor pack 跑通 official release：tag、manifest、checksum、SBOM/attestation、main registry pointer；用户或 runtime 可消费前 repo 必须 public。
+8. 等 trust policy 稳定后，在 `evozeus-runtime` 启动可执行能力；用户可安装前 repo 必须 public。
 
 ## 5. 完成标准
 
