@@ -256,6 +256,46 @@ Branch protection baseline：
 5. 有第一个 reviewed Factor pack 后，把 `evozeus-factors-official` 调整为 public-read，并发布 tag + manifest + checksum + SBOM。
 6. `evozeus-runtime` 等 trust policy 和 permission model 稳定后再 public-read。
 
+### 4.4 Skill Repo 拆分判断
+
+当前不单独创建 `evozeus-skills` repo。
+
+原因：
+
+- 现有 `skills/` 是 EvoZeus protocol surface 的一部分，不是独立内容库。
+- root `SKILL.md`、`skills/index/SKILL.md`、scenario skills、ontology、evidence grading、privacy gate 和 PR routing 必须同步演进。
+- `skills/` 已被主 repo 治理定义为高风险 instruction surface，变更需要 owner / CODEOWNERS review。
+- 社区共创当前以 Case / Candidate / Factor / RFC 为入口，不应鼓励绕过 Candidate lifecycle 直接提交 agent instruction。
+- Skill 是 Verdict 可能落成的一类 Artifact，但不是所有 contribution 的默认目标；过早拆 repo 会把 EvoZeus 拉回 prompt/skill collection。
+
+保留在 `EvoZeus` 主 repo 的内容：
+
+| 内容 | 原因 |
+| --- | --- |
+| root `SKILL.md` | zero-install canonical entry，必须跟 protocol 同步 |
+| `skills/index/SKILL.md` | scenario router，依赖主 repo 的治理文档和术语 |
+| `skills/evozeus-*` scenario skills | 当前是开发、贡献、redaction、runtime、reporting 等治理工作流 |
+| skill proposal / skill instruction PR template | 属于 governance-risk change |
+
+只有满足以下条件时，才考虑新建 `evozeus-skills`：
+
+1. 出现一批已通过 `candidate -> reviewed -> core` 的 public Skills，需要独立版本和安装。
+2. Skill 使用者不需要 clone 完整 `EvoZeus` protocol repo，也能按 manifest 选择安装。
+3. Skill 与主 protocol 有明确 compatibility matrix，例如 `evozeus-protocol >= 0.x`。
+4. Skill review queue 的流量已经影响主 repo 的 protocol / governance review。
+5. 已有 skill manifest schema、validation、redaction、license、example proof 和 release gate。
+
+如果未来拆分，建议边界是：
+
+| Repo | 职责 |
+| --- | --- |
+| `EvoZeus` | 保留 root `SKILL.md`、canonical governance、ontology、schemas、candidate lifecycle、skill proposal gate |
+| `evozeus-skills` | 只收已 reviewed/core 的可安装 public Skills、manifest、examples、compatibility matrix |
+| `evozeus-factor-lab` | 仍只承接 Factor pack / scanner module 孵化，不承接普通 Skill 投稿 |
+| `evozeus-runtime` | 未来按 manifest 选择安装 Skill / Factor，不直接消费未 reviewed 的 skill PR |
+
+未来 `evozeus-skills` 的可见性应该是 public-read / PR-gated；但创建时机应晚于主 repo Candidate lifecycle 和 skill validation 成熟。
+
 ## 5. User Paths
 
 ### 5.1 Judge One Session
