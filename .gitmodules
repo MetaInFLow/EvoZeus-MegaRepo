@@ -1,0 +1,15 @@
+[submodule "EvoZeus-MegaRepo/10-repos/evozeus"]
+	path = EvoZeus-MegaRepo/10-repos/evozeus
+	url = https://github.com/MetaInFLow/EvoZeus.git
+[submodule "EvoZeus-MegaRepo/10-repos/evozeus-community"]
+	path = EvoZeus-MegaRepo/10-repos/evozeus-community
+	url = https://github.com/MetaInFLow/EvoZeus-community.git
+[submodule "EvoZeus-MegaRepo/10-repos/evozeus-factor-lab"]
+	path = EvoZeus-MegaRepo/10-repos/evozeus-factor-lab
+	url = https://github.com/MetaInFLow/evozeus-factor-lab.git
+[submodule "EvoZeus-MegaRepo/10-repos/evozeus-factors-official"]
+	path = EvoZeus-MegaRepo/10-repos/evozeus-factors-official
+	url = https://github.com/MetaInFLow/evozeus-factors-official.git
+[submodule "EvoZeus-MegaRepo/10-repos/evozeus-runtime"]
+	path = EvoZeus-MegaRepo/10-repos/evozeus-runtime
+	url = https://github.com/MetaInFLow/evozeus-runtime.git
