@@ -43,8 +43,8 @@ Scenario skills
 
 Component repo skills
   -> runtime implementation
-  -> factor lab review
-  -> official factor release
+  -> factor contract lab
+  -> official factor contract
 ```
 
 ## 3. 目标 Skill Inventory
@@ -58,8 +58,8 @@ Component repo skills
 | Router | `EvoZeus-Skill Index` | `10-repos/evozeus/skills/index/SKILL.md` | 根据用户明确意图选择 scenario skill | 增加 precedence rules |
 | Runtime route | `EvoZeus-Runtime Routing` | `10-repos/evozeus/skills/evozeus-runtime-routing/SKILL.md` | 从主 repo 上下文转交 runtime trust policy | 从 `evozeus-runtime` 重命名，避免冲突 |
 | Runtime component | `EvoZeus Runtime` | `10-repos/evozeus-runtime/SKILL.md` | CLI/TUI/local registry/scanner/factor execution/report execution owner | 保留 component owner，frontmatter 可改为 `evozeus-runtime-component` 或保留唯一名后统一引用 |
-| Lab component | `EvoZeus Factor Lab` | `10-repos/evozeus-factor-lab/SKILL.md` | Factor pack / scanner module quarantine and review | 保留 |
-| Official component | `EvoZeus Official Factors` | `10-repos/evozeus-factors-official/SKILL.md` | immutable official release manifest/checksum/attestation | 保留 |
+| Lab component | `EvoZeus Factor Lab` | `10-repos/evozeus-factor-lab/SKILL.md` | Python AbstractFactor 草案、spec、examples | 保留 |
+| Official component | `EvoZeus Official Factors` | `10-repos/evozeus-factors-official/SKILL.md` | Python OfficialFactor 稳定 contract、官方 schema、canonical examples | 保留 |
 
 命名建议：优先把主 repo scenario skill 从 `evozeus-runtime` 改为 `evozeus-runtime-routing`，让 `evozeus-runtime` 这个名字留给 runtime component repo。迁移期可以保留一层 deprecated alias，但正式 cluster validator 应禁止重复 `name`。
 
@@ -133,15 +133,16 @@ Community API 可以登记 hash 和公开安全 metadata；不得接收 raw sess
 | 用户要改 `SKILL.md` 或 `skills/` | `EvoZeus-Development` + `EvoZeus-Skill Proposal` | 使用 skill instruction PR template | 不只读 Development |
 | 用户要保存或发布 judgment | `EvoZeus-Artifact Preservation` | `EvoZeus-Redaction` + route-specific skill | 不跳过用户批准 |
 
-## 7. Lab Reviewed Channel Decision
+## 7. Factor Contract Repo Decision
 
-目标设计采用 **official-only user runtime consumption**：
+目标设计采用 **contract-only factor repos**：
 
-- `evozeus-factor-lab/reviewed` 表示“已通过 lab review”，不等于可被普通用户 runtime 安装。
-- runtime 默认只消费 `evozeus-factors-official` 的 release manifest、checksum、SBOM / attestation。
-- 如果 maintainer 需要测试 reviewed asset，应走 lab-local test 或 explicit experimental channel，并在 output 中标记 `not official`、`not default installable`。
+- `evozeus-factor-lab` 表示 Python Factor contract lab，不再有 `reviewed/` channel。
+- `evozeus-factors-official` 表示稳定 Python OfficialFactor contract，不再是 release manifest / checksum / SBOM 仓库。
+- runtime 不能把 lab examples 或 official canonical examples 当默认安装业务 Factor。
+- 真实业务 Factor pack 和 scanner pack 的发布机制另行定义；在定义前不得塞进这两个 contract repo。
 
-这会牺牲一点实验速度，但可以避免 runtime 从 moving branch 或未 release 资产安装可执行 scanner / Factor pack。
+这会牺牲一点资产发布速度，但可以避免 contract repo 被真实执行包、scanner 权限和供应链元数据污染。
 
 ## 8. 必补 Skill 候选
 
@@ -164,6 +165,6 @@ Skill 体系进入下一阶段前，需要新增 cluster-level validator：
 4. 检查正式 skill `name` 全局唯一。
 5. 检查 folder/name 例外是否在 manifest 中声明，例如 `skills/index` -> `evozeus-skill-index`。
 6. 检查 `skill-coverage.md`、community `/skill` router 和 README 引用的 skill 是否存在。
-7. 对 prototype scanner pack 的 `SKILL.md` 做 exclude 或重命名，避免误发现。
+7. 对 prototype scanner pack 和 factor examples 的 `SKILL.md` 做 exclude 或重命名，避免误发现。
 
 通过这个 validator 前，不应声称 skill system 已闭环。

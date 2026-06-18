@@ -1,7 +1,7 @@
 # Skill System Implementation Plan
 
 - Status: implemented in PR branch
-- Last updated: 2026-06-18
+- Last updated: 2026-06-19
 - Scope: EvoZeus Skill 体系 review 后的整改实施路线
 - Owner: MetaInFlow
 
@@ -33,10 +33,10 @@
 本轮不做：
 
 - 不实现完整 runtime CLI / TUI。
-- 不默认启用 scanner、runner 或 default official factors。
+- 不默认启用 scanner、runner 或 default factors。
 - 不创建独立 `evozeus-skills` repo。
 - 不把 runtime prototype 迁回主 repo。
-- 不把 lab `reviewed` 资产作为普通用户可安装 official source。
+- 不把 factor contract repo 的 examples 当普通用户可安装 source。
 
 ## 4. Workstream A：统一 `/skill` 和安装链路
 
@@ -167,26 +167,27 @@ description: Use when registering a local EvoZeus workspace, installing the EvoZ
 - root `SKILL.md` 不再把 report、runtime、install 混在同一条描述里。
 - 每个受影响 skill 有最小 Output Shape。
 
-## 8. Workstream E：统一 lab reviewed channel
+## 8. Workstream E：统一 Factor contract repo 口径
 
 **Decision to implement**
 
-普通用户 runtime consumption 只允许 official release manifest。
+`evozeus-factor-lab` 和 `evozeus-factors-official` 只承载 Python Factor contract、schema 和 examples；不承载真实业务 Factor pack、scanner module 或 release 物。
 
 **Required changes**
 
 | File | Change |
 | --- | --- |
-| `10-repos/evozeus/docs/governance/factor-registry-governance.md` | 移除或限定 reviewed explicit install；改为 maintainer experimental only |
-| `10-repos/evozeus-factor-lab/README.md` | 保持 reviewed not runtime-installable |
-| `10-repos/evozeus-factor-lab/reviewed/README.md` | 明确 reviewed 只能 promotion / lab-local test |
-| `10-repos/evozeus-runtime/SKILL.md` | 保持 official-only consumption |
-| `docs/reference/skill-coverage.md` | 明确 lab reviewed 不等于 runtime install source |
+| `10-repos/evozeus-factor-lab/README.md` | 明确只维护 Python `AbstractFactor`、spec、examples |
+| `10-repos/evozeus-factors-official/README.md` | 明确只维护 Python `OfficialFactor`、官方 schema、canonical examples |
+| `docs/reference/skill-coverage.md` | 明确 component skill 覆盖 contract，不覆盖 pack release |
+| `docs/tutorials/factor-lab.md` | 改为 contract lab tutorial |
+| `docs/tutorials/official-factors.md` | 改为 official contract tutorial |
 
 **Acceptance criteria**
 
-- 没有文档同时说 reviewed 可以被普通 runtime 安装。
-- runtime docs 始终要求 registry pointer + official manifest + checksum + attestation。
+- 没有文档要求 `submissions/`、`reviewed/`、`rejected/` 存在于 factor lab。
+- 没有文档要求 `packs/`、`manifests/`、`checksums/`、`attestations/` 存在于 official factors。
+- 两个 factor repo 的验证命令均为 Python contract tests 和 spec validator。
 
 ## 9. Workstream F：新增 cluster-level validator
 
@@ -235,7 +236,7 @@ Both pass.
 3. **P0.3** Rename main runtime route skill to avoid `evozeus-runtime` collision.
 4. **P0.4** Sync English README, Chinese README, user journey, skill coverage.
 5. **P1.1** Add precedence table and output shapes.
-6. **P1.2** Resolve reviewed lab channel wording.
+6. **P1.2** Resolve Factor contract repo wording.
 7. **P1.3** Add cluster-level validator.
 8. **P2** Decide whether to add `EvoZeus-Candidate Review`, `EvoZeus-Source Locator`, and `EvoZeus-PR Triage`.
 
@@ -260,6 +261,6 @@ Skill system remediation is complete when:
 - Install report states local inventory and next command.
 - All formal skill `name` values are globally unique.
 - No formal docs route scanner/runner implementation back to the main repo.
-- Runtime consumes only official release manifests by default.
+- Runtime consumes only approved factor source pointers with explicit contract version by default.
 - The validator prevents duplicate names and prototype `SKILL.md` mis-discovery.
 - Chinese and English user-facing docs describe the same sequence.

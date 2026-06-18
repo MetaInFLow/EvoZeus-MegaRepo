@@ -1,7 +1,7 @@
 # Infra Local Execution Kernel 开发标准
 
 - Status: active
-- Last updated: 2026-06-18
+- Last updated: 2026-06-19
 - Scope: 旧 `__infra__` 到 `evozeus-infra` 的迁移开发边界、repo 分工、验收和验证标准
 - Owner: MetaInFlow
 
@@ -13,7 +13,7 @@
 infra = local execution kernel
 ```
 
-`evozeus-infra` 承接本地执行平面：workspace、scanner framework、factor runner、SQLite ledger、report、CLI/TUI、companion backend。Factor / Scanner 的生命周期、协议治理、社区入口和 official release 不属于 infra。
+`evozeus-infra` 承接本地执行平面：workspace、scanner framework、factor runner、SQLite ledger、report、CLI/TUI、companion backend。Factor 协议语义、Factor Python contract、社区入口和治理不属于 infra。
 
 > Naming note: 当前本地目录仍是 `10-repos/evozeus-runtime`，但 package name、README 和 SKILL 已按 `evozeus-infra` 定义。本文使用产品名 `evozeus-infra`，并在路径中保留当前本地目录名。
 
@@ -26,7 +26,7 @@ infra = local execution kernel
 | Protocol、Verdict、Case、Evidence、Candidate 语义 | `10-repos/evozeus` | 公共协议、治理、schema、ontology 或贡献生命周期 |
 | Evidence Report 格式、report 模板协议 | `10-repos/evozeus` | 规定输出语义，不执行本地生成 |
 | public Case / Candidate / Pattern | `10-repos/evozeus` | 可公开、可脱敏、可被社区 review 的资产 |
-| registry pointer、default official factors 指针 | `10-repos/evozeus` | 只引用可信 release，不存执行包 |
+| registry pointer、default factor set 指针 | `10-repos/evozeus` | 只引用可信来源和 contract version，不存执行包 |
 | `/skill` 安装入口、用户引导、官网文案 | `10-repos/evozeus-community` | public-facing front door，不跑 scan/analyze |
 | workspace bootstrap、paths、config、lockfile | `10-repos/evozeus-runtime` | 本地状态和执行权限属于 infra |
 | SQLite Local Analysis Ledger | `10-repos/evozeus-runtime` | 本地事实账本，记录 scan/analyze/result |
@@ -34,17 +34,18 @@ infra = local execution kernel
 | CLI / TUI / local companion API | `10-repos/evozeus-runtime` | 本地执行入口和本地服务 |
 | factor runner、runtime isolation、`subprocess_uv` | `10-repos/evozeus-runtime` | 执行框架属于 infra |
 | report generator / local HTML dashboard | `10-repos/evozeus-runtime` | 本地执行输出，不是 protocol 格式定义 |
-| Codex / Claude / Cursor scanner pack 草稿 | `10-repos/evozeus-factor-lab` | pack/module 的开发、审查、rejected/reviewed |
-| factor 业务逻辑包草稿 | `10-repos/evozeus-factor-lab` | infra 只消费，不孵化业务 pack |
-| promoted scanner pack / official factor pack | `10-repos/evozeus-factors-official` | manifest、checksum、SBOM/attestation、Git tag |
+| Factor 抽象类草案、spec 草案、examples | `10-repos/evozeus-factor-lab` | 只定义 Python Factor contract，不存真实业务 pack |
+| 稳定 OfficialFactor 抽象类、官方 spec、canonical examples | `10-repos/evozeus-factors-official` | official 表示稳定合约，不表示 pack 发布仓库 |
+| scanner sandbox、scanner resolver、provider scanner execution | `10-repos/evozeus-runtime` | scanner 是本地执行能力，不放 factor lab |
+| factor 业务逻辑包 / scanner pack 发布物 | 待独立发布机制或外部可信来源 | 当前不放 `factor-lab` / `factors-official` |
 | upload / GitHub issue / PR automation 规则 | `10-repos/evozeus` + optional infra action | 规则在 main；用户批准后 infra 可执行 |
 
 禁止混放：
 
 - 不把可执行 scanner、factor pack、SQLite、CLI、TUI、companion API 加回 `EvoZeus` main repo。
-- 不让 `evozeus-infra` 直接消费 lab moving branch。
-- 不把 lab `reviewed/` 当成普通用户 runtime install source。
-- 不把 official release 的 manifest、checksum、SBOM/attestation 只放在 private 不可审计位置。
+- 不让 `evozeus-infra` 直接消费 lab moving branch 或 examples。
+- 不把 factor lab examples 当成普通用户 runtime install source。
+- 不把 pack release、manifest、checksum、SBOM/attestation 塞进 `evozeus-factor-lab` 或 `evozeus-factors-official`。
 - 不在 community page 收 raw session、secret、客户资料或未脱敏 evidence。
 
 ## 2. 分支和 PR 标准
@@ -57,8 +58,8 @@ infra = local execution kernel
 | 只改 main protocol / governance | `10-repos/evozeus` | 子 repo PR，完成后再更新 mega repo submodule pointer |
 | 只改 community frontend | `10-repos/evozeus-community` | 子 repo PR，完成后再更新 mega repo submodule pointer |
 | 只改 infra implementation | `10-repos/evozeus-runtime` | 子 repo PR，完成后再更新 mega repo submodule pointer |
-| 只改 lab / official pack | 对应 factor repo | 子 repo PR，完成后再更新 mega repo submodule pointer |
-| 同时改协议、infra 和 pack | 拆成多个 PR | 先 main contract，再 lab/official，再 infra consumer，最后 mega repo 指针 |
+| 只改 Factor contract / examples | 对应 factor repo | 子 repo PR，完成后再更新 mega repo submodule pointer |
+| 同时改协议、infra 和 Factor contract | 拆成多个 PR | 先 main protocol，再 factor contract，再 infra consumer，最后 mega repo 指针 |
 
 分支命名：
 
@@ -103,7 +104,7 @@ codex/infra-dev-doc-standards
 
 - 不写入 `EvoZeus` main repo 的 protocol 目录。
 - 初次 bootstrap 只创建最小状态：config、infra dir、lockfile schema 或空 ledger。
-- lockfile 记录 selected official factors、manifest path、checksum、attestation、compatibility。
+- lockfile 记录 selected factors、contract version、source pointer、checksum 或等价完整性信息、compatibility。
 - rollback path 明确：删除 `.evozeus/infra` 或禁用 selected factors。
 - doctor 能解释当前状态。
 
@@ -133,12 +134,12 @@ scan fixture -> write ledger -> query sessions/results/routes -> rerun skips unc
 
 ### Phase 3: Codex scanner + resolver contract
 
-目标：infra 拥有 scanner 执行框架和 resolver contract；provider-specific scanner pack 先进入 lab。
+目标：infra 拥有 scanner 执行框架和 resolver contract；provider-specific scanner 是本地执行能力，不进入 Factor contract repo。
 
 必须验证：
 
 - infra 只定义 scanner sandbox、resolver registry、locator envelope 和 permission gate。
-- Codex scanner pack 草稿在 `evozeus-factor-lab`，声明 files read、files written、env、external commands、network、side effects。
+- Codex scanner pack 草稿在 `evozeus-runtime` 的实验区或独立 scanner 发布机制中声明 files read、files written、env、external commands、network、side effects。
 - scanner 输出统一 `SessionEnvelope` 或等价标准事件模型。
 - resolver 能从 ledger locator 定位原始 event，并检测 source missing / hash mismatch。
 - scanner 默认不联网，不上传。
@@ -151,21 +152,21 @@ scan Codex fixture -> normalized events -> ledger locator -> resolver returns so
 
 ### Phase 4: factor pack discovery + factor runner
 
-目标：infra 能发现、校验并运行 selected official factors；Factor 业务包通过 lab -> official 生命周期发布。
+目标：infra 能发现、校验并运行实现 Python Factor contract 的 selected factors；`factor-lab` / `factors-official` 只提供 contract 和 examples。
 
 必须验证：
 
-- draft factor pack 在 lab，不在 infra。
-- official factor pack 有 manifest、checksum、SBOM/attestation、source_review、Git tag 和 review_state。
-- infra 只通过 main registry pointer 解析 official release。
-- factor runner 支持 `in_process` 和 `subprocess_uv` 的 contract、timeout、错误隔离和 result schema 校验。
+- draft factor pack 不在 lab；lab 只保存 `AbstractFactor`、spec 和 examples。
+- official repo 不保存 official factor pack；它只保存稳定 `OfficialFactor`、schema 和 canonical examples。
+- infra 只通过 main registry pointer 或用户批准的本地来源解析 factor source。
+- factor runner 默认按 Python Factor contract 执行，支持 `in_process` 和 `subprocess_uv` 的 contract、timeout、错误隔离和 result schema 校验。
 - factor 失败不会中断其他 factor。
 - evidence refs 指向存在的 session event。
 
 Done means：
 
 ```text
-registry pointer -> official manifest -> checksum/attestation ok -> selected factor -> FactorResult -> ledger/report
+registry pointer -> factor source + contract version -> selected Python Factor -> FactorResult -> ledger/report
 ```
 
 ### Phase 5: scan/analyze service
@@ -255,28 +256,22 @@ npm run test:infra-contract
 
 ### `10-repos/evozeus-factor-lab`
 
-适用：Factor / scanner submission、reviewed/rejected、lab checks、draft pack。
+适用：Python Factor contract 草案、spec schema、examples、contract tests。
 
 ```bash
 git diff --check
-npm test
-npm run test:lab-contract
-npm run test:lab-factor-runner
-npm run test:fixed-factor
-npm run test:factor
+python3 -m unittest discover -s tests
+python3 scripts/validate_factor_spec.py examples/specs/*.json
 ```
 
 ### `10-repos/evozeus-factors-official`
 
-适用：official pack、release manifest、checksum、SBOM/attestation、runner fixture。
+适用：稳定 Python OfficialFactor contract、官方 spec schema、canonical examples。
 
 ```bash
 git diff --check
-npm test
-npm run test:release-contract
-npm run test:official-factor-runner
-npm run test:fixed-factor
-npm run test:factor
+python3 -m unittest discover -s tests
+python3 scripts/validate_official_factor_spec.py examples/specs/*.json
 ```
 
 ## 6. 正确性验收定义
@@ -286,7 +281,7 @@ npm run test:factor
 1. **落点正确**：改动位于本文件第 1 节规定的 owner repo。
 2. **边界正确**：没有把执行层塞回 main repo，没有让 infra 绕过 registry pointer，没有让 community 收 raw evidence。
 3. **权限正确**：涉及本地文件、env、外部命令、网络、上传、issue/PR automation 时，有 user approval gate 和 rollback path。
-4. **供应链正确**：涉及 official pack 时，有 manifest、checksum、SBOM/attestation、source_review、review_state 和 compatibility。
+4. **供应链正确**：涉及可安装 factor source 时，有 source pointer、完整性校验、compatibility 和回滚策略；factor contract repo 不承载 pack release 物。
 5. **数据正确**：raw session 默认本地；ledger 保存 locator/hash/redacted preview；公开资产已脱敏。
 6. **可复现正确**：有 fixture、contract test 或 smoke path 能复现核心行为。
 7. **命令正确**：第 5 节相关命令 fresh run 通过；若无法运行，PR 必须说明原因、风险和替代验证。
@@ -313,9 +308,9 @@ Rollback:
 下面这些即使测试通过，也不能算正确：
 
 - 在 `EvoZeus` main repo 增加 `scanner.py`、`factor.py`、SQLite schema 或 `.evozeus` bootstrap。
-- `evozeus-infra` 直接从 `evozeus-factor-lab/reviewed` 安装 pack。
+- `evozeus-infra` 直接从 `evozeus-factor-lab/examples` 安装默认 Factor。
 - community `/skill` 页面承诺自动扫描本地文件或直接上传 session。
-- official release 只有 README，没有 manifest/checksum/SBOM/attestation。
+- 把 official pack release、manifest、checksum、SBOM/attestation 放进 `evozeus-factors-official`，混淆 contract repo 与 release repo。
 - report dashboard 直接读 provider raw file，不通过 resolver 和 permission gate。
 - PR 只说“已验证”，但没有 fresh command output 对应的命令。
 
@@ -327,12 +322,12 @@ Rollback:
 | --- | --- | --- | --- |
 | 1 | `10-repos/evozeus-runtime` | `codex/infra-workspace-lockfile` | active workspace/config/lockfile implementation |
 | 2 | `10-repos/evozeus-runtime` | `codex/infra-local-ledger` | SQLite Local Analysis Ledger |
-| 3 | `10-repos/evozeus-factor-lab` | `codex/codex-scanner-submission` | Codex scanner pack submission and gates |
+| 3 | `10-repos/evozeus-factor-lab` | `codex/python-factor-contract-draft` | Python AbstractFactor contract draft and examples |
 | 4 | `10-repos/evozeus-runtime` | `codex/infra-scanner-resolver` | scanner sandbox + resolver contract consumer |
-| 5 | `10-repos/evozeus-factors-official` | `codex/official-default-factors-v0` | first official factor release unit |
-| 6 | `10-repos/evozeus` | `codex/default-factor-registry-pointer` | registry pointer to official release |
-| 7 | `10-repos/evozeus-runtime` | `codex/infra-factor-runner` | official factor discovery + runner |
+| 5 | `10-repos/evozeus-factors-official` | `codex/python-official-factor-contract` | stable OfficialFactor contract and canonical examples |
+| 6 | `10-repos/evozeus` | `codex/default-factor-registry-pointer` | registry pointer schema to approved factor source |
+| 7 | `10-repos/evozeus-runtime` | `codex/infra-factor-runner` | Python factor discovery + runner |
 | 8 | `10-repos/evozeus-runtime` | `codex/infra-scan-analyze-service` | onboard -> scan -> analyze -> report -> doctor |
 | 9 | `10-repos/evozeus-runtime` | `codex/infra-local-surfaces` | CLI/TUI/companion/browser workspace/report |
 
-这些 PR 可以串行推进。不要把第 3 到第 7 步压进一个大 PR；否则很难判断是 protocol、release、pack 还是 infra consumer 出错。
+这些 PR 可以串行推进。不要把第 3 到第 7 步压进一个大 PR；否则很难判断是 protocol、contract 还是 infra consumer 出错。

@@ -17,14 +17,14 @@
 - `../../00-global/evozeus-overall-design.md`
 - `../../00-global/repo-structure-naming.md`
 - `../../10-repos/evozeus-runtime/README.md`
-- official factors 的 release manifest 规则。
+- Python Factor contract 规则。
 
 ## 操作步骤
 
 1. 先写清楚 runtime 要消费什么：
    - 主 repo protocol / schema。
    - 主 repo registry pointer。
-   - official release manifest。
+   - factor source pointer 和 contract version。
    - local registry。
    - opt-in scanner。
 2. 对每个可执行能力定义权限：
@@ -35,7 +35,7 @@
    - 外部命令调用。
 3. 默认 local-first，不自动上传 raw session。
 4. scanner / factor code / MCP / LLM / visualization pack 必须显式启用。
-5. runtime 不直接消费 Discord thread、lab moving branch 或未审 submission。
+5. runtime 不直接消费 Discord thread、factor lab examples 或未审 source。
 6. 任何从旧 prototype 设计意图延伸出的代码，都必须重新声明权限、依赖、sandbox、默认关闭行为和 public install gate。
 
 ## 产出
@@ -50,7 +50,7 @@
 
 - 不要默认安装 scanner。
 - 不要自动联网或上传。
-- 不要绕过 official manifest / checksum / attestation。
+- 不要绕过 source pointer、contract version、完整性校验和用户确认。
 
 ## 验证
 

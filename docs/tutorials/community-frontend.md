@@ -23,7 +23,8 @@
 1. 确认页面要解决的问题：解释 EvoZeus、引导贡献、展示 docs surface，还是发布公告。
 2. 内容必须指向主 repo 的正式入口：
    - Case / Candidate / Factor：主 repo issue / PR。
-   - Factor pack / scanner：maintainer route 到 factor lab。
+   - Factor contract / example：maintainer route 到 factor lab 或 official contract repo。
+   - Factor pack / scanner：不进 community，也不进 factor contract repo；路由到 runtime 或后续独立发布机制。
    - Governance：主 repo RFC / governance PR。
 3. 不在官网收 raw evidence，不在页面里放 private context，也不把 private Web 源码当成公开协议资产来源。
 4. 如果链接了 Discord，要说明 Discord 是 PR 前缓冲层，不替代 GitHub governance。

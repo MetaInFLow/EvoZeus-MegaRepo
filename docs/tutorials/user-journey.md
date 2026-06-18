@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解用户从 `evozeus-community/skill` 进入后，如何先完成注册、安装 EvoZeus skeleton 与 EvoZeus skills，再在用户确认后按需拼接 runtime、default official factors、judgment 和沉淀路径。
+理解用户从 `evozeus-community/skill` 进入后，如何先完成注册、安装 EvoZeus skeleton 与 EvoZeus skills，再在用户确认后按需拼接 runtime、default factors、judgment 和沉淀路径。
 
 ## 适合谁
 
@@ -40,11 +40,10 @@
    - 再读取 `evozeus-runtime/SKILL.md` 承接 runtime、scanner、runner、local state 和 report generation。
    - 向用户说明要启用的本地能力、读取范围、写入范围、网络行为和回滚方式。
    - 等用户确认后，才进入 runtime path。
-5. runtime 只通过可信路径拼接 default official factors：
+5. runtime 只通过可信路径拼接 default factors：
    - 读取 `EvoZeus` registry pointer。
-   - 读取 `evozeus-factors-official` release manifest。
-   - 校验 checksum、SBOM / attestation 和 compatibility。
-   - 只启用用户选择的 factors。
+   - 校验 factor source pointer、contract version、完整性信息和 compatibility。
+   - 按 Python Factor contract 只启用用户选择的 factors。
 6. runtime 在本地跑 judgment：
    - 扫描 session evidence。
    - 运行 selected official factors。
@@ -58,8 +57,8 @@
 | --- | --- |
 | Case / Evidence / judgment report | `EvoZeus` issue 或 Candidate PR |
 | semantic Factor proposal | 先进入 `EvoZeus` 主 repo |
-| executable Factor pack / scanner module | `evozeus-factor-lab` |
-| promoted official pack | `evozeus-factors-official` |
+| Python Factor contract / example | `evozeus-factor-lab` 或 `evozeus-factors-official` |
+| executable Factor pack / scanner module | 不进入 factor contract repo；按 runtime / 独立发布机制处理 |
 | runtime / infra / CLI / scanner execution / local state | `evozeus-runtime` |
 
 ## 产出
@@ -72,10 +71,10 @@
 
 - 不要把 `/skill` 变成 judgment 或 runtime 执行入口。
 - 不要把 Start Here 变成静默安装。
-- 不要让 runtime 直接消费 lab moving branch。
-- 不要把 executable Factor pack、scanner module 或 runtime infra PR 提到 `EvoZeus` 主 repo。
+- 不要让 runtime 直接消费 lab examples。
+- 不要把 executable Factor pack、scanner module 或 runtime infra PR 提到 `EvoZeus` 主 repo 或 factor contract repo。
 - 不要上传 raw private session。
-- 不要绕过 manifest、checksum、attestation 或用户确认。
+- 不要绕过 source pointer、完整性校验、contract version 或用户确认。
 
 ## 验证
 
@@ -89,10 +88,10 @@ evozeus-community/skill
   -> user-approved protocol judgment
   -> optional runtime approval via EvoZeus-Runtime Routing
   -> registry pointer
-  -> official manifest / checksum / attestation
+  -> factor source pointer / contract version / integrity check
   -> local judgment
   -> user-approved redacted preservation
   -> correct repo route
 ```
 
-如果任何一步需要执行代码、扫描本地文件、安装 pack 或维护 local state，它不属于 `EvoZeus` 主 repo 目标职责，应路由到 `evozeus-runtime` 或 Factor lifecycle repo。
+如果任何一步需要执行代码、扫描本地文件、安装 pack 或维护 local state，它不属于 `EvoZeus` 主 repo 或 factor contract repo 目标职责，应路由到 `evozeus-runtime` 或后续独立发布机制。

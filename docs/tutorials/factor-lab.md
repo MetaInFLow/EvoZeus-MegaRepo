@@ -2,54 +2,49 @@
 
 ## 目标
 
-理解 `10-repos/evozeus-factor-lab` 如何承接 Factor pack / scanner module 孵化。
+理解 `10-repos/evozeus-factor-lab` 如何维护 Python Factor contract 草案、spec 和 examples。
 
 ## 适合谁
 
-- Factor reviewer。
-- scanner module 作者。
-- 需要把主 repo Factor Candidate 路由到 lab 的 maintainer。
+- Factor contract 作者。
+- 需要改 `AbstractFactor` API 的开发者。
+- 需要补 Factor 示例和测试向量的 maintainer。
 
 ## 前置条件
 
 先读：
 
 - `../../10-repos/evozeus-factor-lab/README.md`
-- `../../10-repos/evozeus-factor-lab/checks/README.md`
-- `../../10-repos/evozeus-factor-lab/templates/factor-submission.md`
-- `../../10-repos/evozeus-factor-lab/templates/scanner-submission.md`
+- `../../10-repos/evozeus-factor-lab/SKILL.md`
+- `../../10-repos/evozeus-factor-lab/src/evozeus_factor_lab/factor.py`
 
 ## 操作步骤
 
-1. 从主 repo issue / Candidate PR 接收 maintainer route，不直接接收未分流的普通投稿。
-2. 判断 submission 类型：
-   - pure Factor metadata。
-   - Factor pack。
-   - scanner module。
-3. 选择 domain：
-   - `agent-behavior`
-   - `tool-use`
-   - `privacy`
-   - `environment`
-   - `runtime`
-4. 按模板补齐 evidence、privacy、when not to use、counterexample。
-5. scanner module 必须追加 permission、dependency、sandbox、supply chain review。
-6. review 后进入 `reviewed/` 或 `rejected/`，不要只关掉不留原因。
+1. 判断改动是否真的是 Factor contract，而不是业务 Factor 或 scanner。
+2. 如果改抽象 API，先改 `src/evozeus_factor_lab/factor.py`。
+3. 如果改 spec shape，同步改 `schemas/factor-spec.schema.json`。
+4. 用 `examples/factors/` 补 Python 示例。
+5. 用 `examples/specs/` 补 JSON spec 示例。
+6. 用 `examples/sessions/` 放脱敏测试输入。
+7. 运行 contract tests 和 spec validator。
 
 ## 产出
 
-- `submissions/`、`reviewed/` 或 `rejected/` 中的结构化记录。
-- 如果准备 promotion，给 `evozeus-factors-official` 的 release PR 留出 evidence 和 source review。
+- Python `AbstractFactor` contract。
+- Factor spec schema。
+- 可运行、可复核、非业务化的 examples。
 
 ## 不要做
 
-- 不要把 lab merge 当作 official release。
-- 不要让 runtime 直接消费 lab moving branch。
-- 不要把 raw private session 放进 lab。
+- 不要放真实业务 Factor pack。
+- 不要放 scanner module。
+- 不要创建 `submissions/`、`reviewed/`、`rejected/`。
+- 不要把 examples 当成 runtime 默认安装源。
 
 ## 验证
 
 ```bash
 git diff --check
-node -e "JSON.parse(require('fs').readFileSync('schemas/factor-submission.schema.json','utf8')); console.log('factor schema json ok')"
+python3 -m unittest discover -s tests
+python3 scripts/validate_factor_spec.py examples/specs/*.json
 ```

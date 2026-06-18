@@ -25,12 +25,13 @@
    - semantic：ontology、verdict、evidence、schema。
    - governance：PR routing、privacy、proof、labels、CODEOWNERS。
    - docs/example：README、example cases、report templates。
-   - registry pointer：official release manifest 的稳定引用和撤回状态。
+   - registry pointer：factor source pointer、contract version 和撤回状态。
 2. 保持 PR 小范围，不混合 runtime code、governance、docs 和 community Case。
-3. Factor 相关改动先问：这是 Candidate / registry pointer，还是 pack / scanner？
+3. Factor 相关改动先问：这是 Candidate / registry pointer、contract，还是 pack / scanner？
    - Candidate / registry pointer 留在主 repo。
-   - pack / scanner 路由到 `evozeus-factor-lab`。
-   - official release 路由到 `evozeus-factors-official`。
+   - Python contract 草案路由到 `evozeus-factor-lab`。
+   - 稳定 official contract 路由到 `evozeus-factors-official`。
+   - pack / scanner 不进入主 repo 或 factor contract repo，路由到 runtime 或后续独立发布机制。
 4. Runtime 相关改动先问：这是 protocol / trust policy，还是执行实现？
    - protocol、trust policy、registry contract 可留在主 repo。
    - CLI、TUI、companion、scanner implementation、local state、report execution 路由到 `evozeus-runtime`。
