@@ -13,7 +13,7 @@
 
 - 正式 skill 没有明显 orphan；root -> index -> scenario skill 的文件层面入口基本完整。
 - 最大问题不是 skill 数量，而是 `/skill`、注册安装、runtime handoff 和 component ownership 没有统一成一条链。
-- 主 repo `skills/evozeus-runtime/SKILL.md` 和 `evozeus-runtime/SKILL.md` 使用相同 `name: evozeus-runtime`，会在全局 skill registry 中冲突。
+- 主 repo `skills/evozeus-infra/SKILL.md` 和 `evozeus-infra/SKILL.md` 使用相同 `name: evozeus-infra`，会在全局 skill registry 中冲突。
 - `runtime` / `registry-release`、`reporting` / `runtime`、`doctor` / `runtime`、`development` / `skill-proposal` 的 precedence 不够硬。
 - `check_pr_ready.py` 只检查主 repo 内部 skill，不能发现跨 repo duplicate name 或 historical prototype `SKILL.md` 误发现。
 
@@ -116,7 +116,7 @@ description: Use when registering a local EvoZeus workspace, installing the EvoZ
 - `docs/reference/skill-coverage.md` 增加 `evozeus-install-registration`。
 - community `/skill` 指向这个 skill，而不是把自己当 router。
 
-## 6. Workstream C：解决 `evozeus-runtime` 命名冲突
+## 6. Workstream C：解决 `evozeus-infra` 命名冲突
 
 **Recommended migration**
 
@@ -130,13 +130,13 @@ description: Use when registering a local EvoZeus workspace, installing the EvoZ
    - `docs/reference/skill-coverage.md`
    - community `/skill`
    - README / tutorials。
-3. runtime repo root skill 保留 component owner 语义；如果 cluster validator 要求 component 名也带后缀，可改为 `name: evozeus-runtime-component`，但不要和主 repo scenario skill 同名。
-4. 可选：保留一个迁移说明，说明旧 `evozeus-runtime` scenario name 已废弃。
+3. runtime repo root skill 保留 component owner 语义；如果 cluster validator 要求 component 名也带后缀，可改为 `name: evozeus-infra-component`，但不要和主 repo scenario skill 同名。
+4. 可选：保留一个迁移说明，说明旧 `evozeus-infra` scenario name 已废弃。
 
 **Acceptance criteria**
 
 - cluster-level validator 没有 duplicate `name`。
-- `rg -n "evozeus-runtime" docs 00-global 10-repos/evozeus 10-repos/evozeus-community` 中能区分 route skill 和 component repo。
+- `rg -n "evozeus-infra" docs 00-global 10-repos/evozeus 10-repos/evozeus-community` 中能区分 route skill 和 component repo。
 
 ## 7. Workstream D：补硬 precedence
 
@@ -203,12 +203,12 @@ Given this mega repo already uses `docs/reference/skill-coverage.md` as cluster-
 1. Discover formal skills:
    - `10-repos/evozeus/SKILL.md`
    - `10-repos/evozeus/skills/*/SKILL.md`
-   - `10-repos/evozeus-runtime/SKILL.md`
+   - `10-repos/evozeus-infra/SKILL.md`
    - `10-repos/evozeus-factor-lab/SKILL.md`
    - `10-repos/evozeus-factors-official/SKILL.md`
 2. Exclude:
    - `node_modules`
-   - `10-repos/evozeus-runtime/prototypes/main-repo-runtime/**`
+   - `10-repos/evozeus-infra/prototypes/main-repo-runtime/**`
 3. Validate:
    - YAML frontmatter exists。
    - `name` exists and matches lowercase kebab-case。
@@ -233,7 +233,7 @@ Both pass.
 
 1. **P0.1** Update community `/skill` to install-first and adjust tests.
 2. **P0.2** Add `EvoZeus-Install Registration` skill and route it from root/index/coverage.
-3. **P0.3** Rename main runtime route skill to avoid `evozeus-runtime` collision.
+3. **P0.3** Rename main runtime route skill to avoid `evozeus-infra` collision.
 4. **P0.4** Sync English README, Chinese README, user journey, skill coverage.
 5. **P1.1** Add precedence table and output shapes.
 6. **P1.2** Resolve Factor contract repo wording.

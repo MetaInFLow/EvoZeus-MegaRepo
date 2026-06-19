@@ -37,7 +37,7 @@
    - 不静默安装 runtime、scanner 或 factors。
 4. 如果需要本地执行，Agent 按 `skills/index/SKILL.md` 路由到 runtime 场景：
    - 读取 `skills/evozeus-runtime-routing/SKILL.md`。
-   - 再读取 `evozeus-runtime/SKILL.md` 承接 runtime、scanner、runner、local state 和 report generation。
+   - 再读取 `evozeus-infra/SKILL.md` 承接 runtime、scanner、runner、local state 和 report generation。
    - 向用户说明要启用的本地能力、读取范围、写入范围、网络行为和回滚方式。
    - 等用户确认后，才进入 runtime path。
 5. runtime 只通过可信路径拼接 default factors：
@@ -59,7 +59,7 @@
 | semantic Factor proposal | 先进入 `EvoZeus` 主 repo |
 | Python Factor contract / example | `evozeus-factor-lab` 或 `evozeus-factors-official` |
 | executable Factor pack / scanner module | 不进入 factor contract repo；按 runtime / 独立发布机制处理 |
-| runtime / infra / CLI / scanner execution / local state | `evozeus-runtime` |
+| runtime / infra / CLI / scanner execution / local state | `evozeus-infra` |
 
 ## 产出
 
@@ -94,4 +94,4 @@ evozeus-community/skill
   -> correct repo route
 ```
 
-如果任何一步需要执行代码、扫描本地文件、安装 pack 或维护 local state，它不属于 `EvoZeus` 主 repo 或 factor contract repo 目标职责，应路由到 `evozeus-runtime` 或后续独立发布机制。
+如果任何一步需要执行代码、扫描本地文件、安装 pack 或维护 local state，它不属于 `EvoZeus` 主 repo 或 factor contract repo 目标职责，应路由到 `evozeus-infra` 或后续独立发布机制。

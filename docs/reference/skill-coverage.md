@@ -16,16 +16,16 @@
 | Start Here | 安装后的首次 protocol-only judgment | `EvoZeus/skills/evozeus-start-here-onboarding` + `EvoZeus/SKILL.md` | covered |
 | Scenario routing | 选择 runtime、report、redaction、contribution、development 等场景 | `EvoZeus/skills/index/SKILL.md` | covered |
 | First judgment | 在回复中输出 Session Verdict Card | `EvoZeus/SKILL.md` + `evozeus-reporting` | covered |
-| Runtime approval | 用户确认本地执行、读取、写入、安装和网络行为 | `EvoZeus/skills/evozeus-runtime-routing` + `evozeus-runtime/SKILL.md` | covered as policy |
-| Default factors | 从 registry pointer 解析 default factor source 和 contract version | `evozeus-registry-release` + `evozeus-runtime/SKILL.md` + `evozeus-runtime/test:runtime-contract` | covered as policy; implementation future |
+| Runtime approval | 用户确认本地执行、读取、写入、安装和网络行为 | `EvoZeus/skills/evozeus-runtime-routing` + `evozeus-infra/SKILL.md` | covered as policy |
+| Default factors | 从 registry pointer 解析 default factor source 和 contract version | `evozeus-registry-release` + `evozeus-infra/SKILL.md` + `evozeus-infra/test:infra-contract` | covered as policy; implementation future |
 | Official Factor contract | 校验 Python `OfficialFactor` contract、schema 和 canonical examples | `evozeus-factors-official/SKILL.md` + `python3 -m unittest discover -s tests` | covered as contract |
-| Local runtime execution | 扫描、运行 factors、生成 report、写 lockfile | `evozeus-runtime/SKILL.md` + `evozeus-runtime/test:infra-components` | component availability covered; product implementation still future |
+| Local runtime execution | 扫描、运行 factors、生成 report、写 lockfile | `evozeus-infra/SKILL.md` + `evozeus-infra/test:infra-components` | component availability covered; product implementation still future |
 | Preservation decision | 用户确认是否沉淀 | `evozeus-artifact-preservation` | covered |
 | Public redaction | 去除 raw session、secret、客户资料和私有路径 | `evozeus-redaction` | covered |
 | Main repo contribution | Case、Candidate、semantic Factor、Pattern、Habit | `evozeus-community-contribution` | covered |
 | Factor contract lab | Python `AbstractFactor` 草案、spec、examples | `evozeus-factor-lab/SKILL.md` + `python3 -m unittest discover -s tests` | covered as contract |
 | Official Factor contract | 稳定 Python `OfficialFactor`、官方 schema、canonical examples | `evozeus-factors-official/SKILL.md` + `python3 scripts/validate_official_factor_spec.py examples/specs/*.json` | covered as contract |
-| Runtime / infra development | CLI、TUI、companion、scanner execution、local state | `evozeus-runtime/SKILL.md` | covered as route |
+| Runtime / infra development | CLI、TUI、companion、scanner execution、local state | `evozeus-infra/SKILL.md` | covered as route |
 
 ## 2. Main Repo Scenario Skills
 
@@ -51,7 +51,7 @@
 
 | Repo | Skill | 职责 |
 | --- | --- | --- |
-| `evozeus-runtime` | `SKILL.md` + `npm run test:infra-components` + `npm run test:runtime-contract` | runtime enablement、infra components、permissions、default official factors、lockfile、local judgment、runtime PR |
+| `evozeus-infra` | `SKILL.md` + `npm run test:infra-components` + `npm run test:infra-contract` | runtime enablement、infra components、permissions、default official factors、lockfile、local judgment、runtime PR |
 | `evozeus-factor-lab` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_factor_spec.py examples/specs/*.json` | Python AbstractFactor 草案、Factor spec、examples |
 | `evozeus-factors-official` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_official_factor_spec.py examples/specs/*.json` | Python OfficialFactor 稳定 contract、官方 spec、canonical examples |
 

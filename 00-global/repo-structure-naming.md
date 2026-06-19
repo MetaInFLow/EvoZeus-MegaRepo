@@ -36,7 +36,7 @@ GitHub repo 命名建议：
 | 官网 / 社区入口源码 | `evozeus-community` | Web 源码保持 private；如未来重命名，可从 `EvoZeus-community` 统一为 lower kebab-case |
 | Factor lab | `evozeus-factor-lab` | 已符合规则 |
 | Official Factor contract | `evozeus-factors-official` | 已符合规则；official 指稳定 contract，不指 pack 仓库 |
-| Runtime | `evozeus-runtime` | 已符合规则 |
+| Runtime | `evozeus-infra` | 已符合规则 |
 | Private workspace | `EvoZeus-MegaRepo` 或未来 `evozeus-workspace` | 当前可保留；若希望减少内部感，后续可改名为 `evozeus-workspace` |
 | Future skill distribution | `evozeus-skills` | deferred，不创建；只在 reviewed/core Skills 需要独立安装时使用 |
 
@@ -75,7 +75,7 @@ EvoZeus-MegaRepo/
     evozeus-community/
     evozeus-factor-lab/
     evozeus-factors-official/
-    evozeus-runtime/
+    evozeus-infra/
   20-materials/
   30-ops/
     discord-openclaw-governance-plan.md
@@ -105,7 +105,7 @@ EvoZeus-MegaRepo/
 | semantic Factor / Skill / Pattern proposal | `.evozeus/` local state、SQLite ledger、lockfile |
 | factor source pointer / registry reference | report execution、pack execution、upload / network runtime |
 
-旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-runtime`；`factor-lab` / `factors-official` 只负责 Factor contract，不负责 installable pack 或 scanner pack。主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
+旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-infra`；`factor-lab` / `factors-official` 只负责 Factor contract，不负责 installable pack 或 scanner pack。主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
 
 建议结构：
 
@@ -204,7 +204,7 @@ skills/
   evozeus-factor-authoring/
   evozeus-redaction/
   evozeus-reporting/
-  evozeus-runtime/
+  evozeus-infra/
   evozeus-skill-proposal/
 ```
 
@@ -306,7 +306,7 @@ evozeus-factors-official/
 如果采用 Go CLI：
 
 ```text
-evozeus-runtime/
+evozeus-infra/
   cmd/
     evozeus/
     doctor/
@@ -332,7 +332,7 @@ evozeus-runtime/
 如果采用 TypeScript / package workspace：
 
 ```text
-evozeus-runtime/
+evozeus-infra/
   packages/
     cli/
     core/
@@ -390,7 +390,7 @@ evozeus-community/
 3. 在 `EvoZeus` 主 repo 新增 `templates/` 和 `quality-gates/`，先只放 README / 草案。
 4. 给重型 scenario skills 增加 `references/`，不改 skill 行为。
 5. 补 `evozeus-factor-lab` 的 Python `AbstractFactor`、schema、examples、tests。
-6. 等 runtime 技术栈确定后，在 `evozeus-runtime` 引入 `cmd/internal` 或 `packages/*`，并按权限模型重建 runtime 能力。
+6. 等 runtime 技术栈确定后，在 `evozeus-infra` 引入 `cmd/internal` 或 `packages/*`，并按权限模型重建 runtime 能力。
 7. 需要统一命名时，考虑把 `EvoZeus-community` 重命名为 `evozeus-community`；这不改变源码 private 策略。
 
 ## 11. 当前判断

@@ -56,12 +56,12 @@ Component repo skills
 | Protocol skeleton | `EvoZeus` | `10-repos/evozeus/SKILL.md` | zero-install judgment、Session Verdict Card、用户确认后路由 | 更新 `/skill` 和 install handoff |
 | First-use adapter | `EvoZeus-Start Here Onboarding` | `10-repos/evozeus/skills/evozeus-start-here-onboarding/SKILL.md` | 安装完成后的第一次 protocol-only judgment | 收窄为 first-use，不再承担注册安装 |
 | Router | `EvoZeus-Skill Index` | `10-repos/evozeus/skills/index/SKILL.md` | 根据用户明确意图选择 scenario skill | 增加 precedence rules |
-| Runtime route | `EvoZeus-Runtime Routing` | `10-repos/evozeus/skills/evozeus-runtime-routing/SKILL.md` | 从主 repo 上下文转交 runtime trust policy | 从 `evozeus-runtime` 重命名，避免冲突 |
-| Runtime component | `EvoZeus Runtime` | `10-repos/evozeus-runtime/SKILL.md` | CLI/TUI/local registry/scanner/factor execution/report execution owner | 保留 component owner，frontmatter 可改为 `evozeus-runtime-component` 或保留唯一名后统一引用 |
+| Runtime route | `EvoZeus-Runtime Routing` | `10-repos/evozeus/skills/evozeus-runtime-routing/SKILL.md` | 从主 repo 上下文转交 runtime trust policy | 从 `evozeus-infra` 重命名，避免冲突 |
+| Infra component | `EvoZeus Infra` | `10-repos/evozeus-infra/SKILL.md` | CLI/TUI/local registry/scanner/factor execution/report execution owner | 保留 component owner，frontmatter 可改为 `evozeus-infra-component` 或保留唯一名后统一引用 |
 | Lab component | `EvoZeus Factor Lab` | `10-repos/evozeus-factor-lab/SKILL.md` | Python AbstractFactor 草案、spec、examples | 保留 |
 | Official component | `EvoZeus Official Factors` | `10-repos/evozeus-factors-official/SKILL.md` | Python OfficialFactor 稳定 contract、官方 schema、canonical examples | 保留 |
 
-命名建议：优先把主 repo scenario skill 从 `evozeus-runtime` 改为 `evozeus-runtime-routing`，让 `evozeus-runtime` 这个名字留给 runtime component repo。迁移期可以保留一层 deprecated alias，但正式 cluster validator 应禁止重复 `name`。
+命名建议：优先把主 repo scenario skill 从 `evozeus-infra` 改为 `evozeus-runtime-routing`，让 `evozeus-infra` 这个名字留给 runtime component repo。迁移期可以保留一层 deprecated alias，但正式 cluster validator 应禁止重复 `name`。
 
 ## 4. 安装和首次使用时序
 
@@ -74,7 +74,7 @@ sequenceDiagram
   participant Local as Local workspace
   participant Main as EvoZeus main repo
   participant Skills as EvoZeus skills
-  participant Runtime as evozeus-runtime
+  participant Runtime as evozeus-infra
 
   User->>Community: Open /skill
   Community-->>User: Registration and install instructions
@@ -126,7 +126,7 @@ Community API 可以登记 hash 和公开安全 metadata；不得接收 raw sess
 | --- | --- | --- | --- |
 | 用户打开或复制 `/skill` | `EvoZeus-Install Registration` | 安装完成后提示是否运行 protocol-only judgment | 不直接运行 runtime 或输出 Verdict |
 | 用户说“审判当前 session” | root `SKILL.md` | 必要时读 `EvoZeus-Reporting` | 不写 `.evozeus/` |
-| 用户要本地 scan / factor execution / generated file report | `EvoZeus-Runtime Routing` | `evozeus-runtime/SKILL.md` | 不在主 repo 实现 runtime |
+| 用户要本地 scan / factor execution / generated file report | `EvoZeus-Runtime Routing` | `evozeus-infra/SKILL.md` | 不在主 repo 实现 runtime |
 | 用户要写报告正文、Verdict Card、Case summary | `EvoZeus-Reporting` | 公开前读 `EvoZeus-Redaction` | 不把 report content work 误归 runtime |
 | 用户要改 registry pointer、default official set、manifest reference | `EvoZeus-Registry Release` | runtime 只消费 verified release | 不让 runtime 绕过 registry pointer |
 | 用户要诊断失败、慢、卡住、环境问题 | `EvoZeus-Doctor Debugging` | 修改 runtime 实现时再读 runtime | 不把一次环境问题直接升级为 Skill |
