@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解 `10-repos/evozeus-runtime` 的未来边界：CLI / TUI / local registry / report generation / selective install。当前阶段先设计 trust policy，不抢跑默认执行能力；旧主 repo runtime prototype 的设计材料已移入 runtime docs，后续实现必须按 runtime 权限模型重新审查。
+理解 `10-repos/evozeus-infra` 的未来边界：CLI / TUI / local registry / report generation / selective install。当前阶段先设计 trust policy，不抢跑默认执行能力；旧主 repo runtime prototype 的设计材料已移入 runtime docs，后续实现必须按 runtime 权限模型重新审查。
 
 ## 适合谁
 
@@ -16,7 +16,7 @@
 
 - `../../00-global/evozeus-overall-design.md`
 - `../../00-global/repo-structure-naming.md`
-- `../../10-repos/evozeus-runtime/README.md`
+- `../../10-repos/evozeus-infra/README.md`
 - Python Factor contract 规则。
 
 ## 操作步骤

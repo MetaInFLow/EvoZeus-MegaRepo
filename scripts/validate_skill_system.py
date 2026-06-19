@@ -24,7 +24,7 @@ COMMUNITY_SKILL_CONTENT = (
 COVERAGE_DOC = ROOT / "docs" / "reference" / "skill-coverage.md"
 
 COMPONENT_SKILLS = [
-    ROOT / "10-repos" / "evozeus-runtime" / "SKILL.md",
+    ROOT / "10-repos" / "evozeus-infra" / "SKILL.md",
     ROOT / "10-repos" / "evozeus-factor-lab" / "SKILL.md",
     ROOT / "10-repos" / "evozeus-factors-official" / "SKILL.md",
 ]
@@ -38,6 +38,7 @@ FORBIDDEN_ACTIVE_PATTERNS = [
     "community/#register",
     "/#register",
     "skills/evozeus-runtime/SKILL.md",
+    "skills/evozeus-infra/SKILL.md",
     "# EvoZeus Agent Skill Router",
     "不是单一注册说明",
 ]
@@ -132,29 +133,33 @@ def validate_skill_metadata(paths: list[Path]) -> list[str]:
     return errors
 
 
-def validate_community_skill_inventory() -> list[str]:
+def validate_community_bootstrap_scope() -> list[str]:
     errors: list[str] = []
     if not COMMUNITY_SKILL_CONTENT.exists():
         return [f"{COMMUNITY_SKILL_CONTENT}: missing community skill content"]
 
     text = COMMUNITY_SKILL_CONTENT.read_text(encoding="utf-8")
-    referenced = set(re.findall(r'folder:\s*"([^"]+)"', text))
-    actual = {path.parent.name for path in MAIN_SKILLS_DIR.glob("*/SKILL.md")}
+    required_tokens = [
+        "# EvoZeus Community Bootstrap Skill",
+        "root \\`SKILL.md\\`",
+        "不要在 bootstrap skill 里复制完整 scenario routing",
+        "npm run test:infra-components",
+    ]
 
-    missing_from_repo = sorted(referenced - actual)
-    missing_from_community = sorted(actual - referenced)
+    for token in required_tokens:
+        if token not in text:
+            errors.append(f"{COMMUNITY_SKILL_CONTENT}: missing bootstrap token {token!r}")
 
-    for folder in missing_from_repo:
-        errors.append(f"community /skill references missing skill folder: {folder}")
-    for folder in missing_from_community:
-        errors.append(f"community /skill omits main skill folder: {folder}")
+    forbidden_tokens = [
+        "skills/evozeus-runtime/SKILL.md",
+        "skills/evozeus-infra/SKILL.md",
+        "skills/evozeus-runtime-routing",
+        "EvoZeus skills inventory",
+    ]
 
-    if "evozeus-install-registration" not in referenced:
-        errors.append("community /skill must include evozeus-install-registration")
-    if "evozeus-runtime" in referenced:
-        errors.append("community /skill must not expose old evozeus-runtime folder")
-    if "evozeus-runtime-routing" not in referenced:
-        errors.append("community /skill must include evozeus-runtime-routing")
+    for token in forbidden_tokens:
+        if token in text:
+            errors.append(f"{COMMUNITY_SKILL_CONTENT}: community bootstrap duplicates routing token {token!r}")
 
     return errors
 
@@ -168,7 +173,7 @@ def validate_docs_coverage(skill_paths: list[Path]) -> list[str]:
     required_tokens = [
         "evozeus-install-registration",
         "evozeus-runtime-routing",
-        "evozeus-runtime/SKILL.md",
+        "evozeus-infra/SKILL.md",
         "evozeus-factor-lab/SKILL.md",
         "evozeus-factors-official/SKILL.md",
     ]
@@ -215,6 +220,9 @@ def validate_forbidden_active_references() -> list[str]:
     old_runtime_skill = MAIN_SKILLS_DIR / "evozeus-runtime" / "SKILL.md"
     if old_runtime_skill.exists():
         errors.append(f"{old_runtime_skill}: old main-repo runtime skill must not exist")
+    old_infra_skill = MAIN_SKILLS_DIR / "evozeus-infra" / "SKILL.md"
+    if old_infra_skill.exists():
+        errors.append(f"{old_infra_skill}: infra component skill must not live in main repo skills")
 
     return errors
 
@@ -223,7 +231,7 @@ def main() -> int:
     skill_paths = formal_skill_paths()
     errors: list[str] = []
     errors.extend(validate_skill_metadata(skill_paths))
-    errors.extend(validate_community_skill_inventory())
+    errors.extend(validate_community_bootstrap_scope())
     errors.extend(validate_docs_coverage(skill_paths))
     errors.extend(validate_forbidden_active_references())
 

@@ -78,7 +78,7 @@ Read the root README, docs/README.md, and docs/tutorials/README.md. Identify whi
 | 改官网 | `10-repos/evozeus-community` |
 | 处理 Factor lab | `10-repos/evozeus-factor-lab` |
 | 发布 official factors | `10-repos/evozeus-factors-official` |
-| 规划 runtime | `10-repos/evozeus-runtime` |
+| 规划 infra | `10-repos/evozeus-infra` |
 | 放资料 / Feishu 导出 | `20-materials/` + `00-global/material-index.md` |
 | 放运营 / 发布 / 权限执行 | `30-ops/` |
 
@@ -90,7 +90,7 @@ EvoZeus-MegaRepo
   -> evozeus-community       community surface
   -> evozeus-factor-lab      Factor pack / scanner incubation
   -> evozeus-factors-official official Factor release source
-  -> evozeus-runtime         future local runtime
+  -> evozeus-infra          future local infra
 ```
 
 ## Trust Contract

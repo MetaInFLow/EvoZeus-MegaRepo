@@ -34,7 +34,7 @@
    - pack / scanner 不进入主 repo 或 factor contract repo，路由到 runtime 或后续独立发布机制。
 4. Runtime 相关改动先问：这是 protocol / trust policy，还是执行实现？
    - protocol、trust policy、registry contract 可留在主 repo。
-   - CLI、TUI、companion、scanner implementation、local state、report execution 路由到 `evozeus-runtime`。
+   - CLI、TUI、companion、scanner implementation、local state、report execution 路由到 `evozeus-infra`。
    - 主 repo 已清理执行层遗留结构，不作为 runtime 目标职责扩展。
 5. 修改后运行主 repo 校验。
 
@@ -48,7 +48,7 @@
 
 - 不要把 executable Factor pack 或 scanner module 放进主 repo。
 - 不要把 CLI / TUI / companion / local API / `.evozeus` state / SQLite ledger / report execution 放进主 repo。
-- 不要把 runtime implementation 加回主 repo；旧 prototype 只能作为历史设计线索，新的执行层实现应进入 `evozeus-runtime`。
+- 不要把 runtime implementation 加回主 repo；旧 prototype 只能作为历史设计线索，新的执行层实现应进入 `evozeus-infra`。
 - 不要上传 raw private session。
 - 不要把社区共创等同于给 contributor repo write 权限。
 

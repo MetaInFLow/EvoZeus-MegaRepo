@@ -15,7 +15,7 @@ infra = local execution kernel
 
 `evozeus-infra` 承接本地执行平面：workspace、scanner framework、factor runner、SQLite ledger、report、CLI/TUI、companion backend。Factor 协议语义、Factor Python contract、社区入口和治理不属于 infra。
 
-> Naming note: 当前本地目录仍是 `10-repos/evozeus-runtime`，但 package name、README 和 SKILL 已按 `evozeus-infra` 定义。本文使用产品名 `evozeus-infra`，并在路径中保留当前本地目录名。
+> Naming note: 当前本地目录仍是 `10-repos/evozeus-infra`，但 package name、README 和 SKILL 已按 `evozeus-infra` 定义。本文使用产品名 `evozeus-infra`，并在路径中保留当前本地目录名。
 
 ## 1. 开发落点判定
 
@@ -28,15 +28,15 @@ infra = local execution kernel
 | public Case / Candidate / Pattern | `10-repos/evozeus` | 可公开、可脱敏、可被社区 review 的资产 |
 | registry pointer、default factor set 指针 | `10-repos/evozeus` | 只引用可信来源和 contract version，不存执行包 |
 | `/skill` 安装入口、用户引导、官网文案 | `10-repos/evozeus-community` | public-facing front door，不跑 scan/analyze |
-| workspace bootstrap、paths、config、lockfile | `10-repos/evozeus-runtime` | 本地状态和执行权限属于 infra |
-| SQLite Local Analysis Ledger | `10-repos/evozeus-runtime` | 本地事实账本，记录 scan/analyze/result |
-| session scan engine、scanner sandbox、resolver runtime | `10-repos/evozeus-runtime` | 执行 scanner、读本地文件、控制权限 |
-| CLI / TUI / local companion API | `10-repos/evozeus-runtime` | 本地执行入口和本地服务 |
-| factor runner、runtime isolation、`subprocess_uv` | `10-repos/evozeus-runtime` | 执行框架属于 infra |
-| report generator / local HTML dashboard | `10-repos/evozeus-runtime` | 本地执行输出，不是 protocol 格式定义 |
+| workspace bootstrap、paths、config、lockfile | `10-repos/evozeus-infra` | 本地状态和执行权限属于 infra |
+| SQLite Local Analysis Ledger | `10-repos/evozeus-infra` | 本地事实账本，记录 scan/analyze/result |
+| session scan engine、scanner sandbox、resolver runtime | `10-repos/evozeus-infra` | 执行 scanner、读本地文件、控制权限 |
+| CLI / TUI / local companion API | `10-repos/evozeus-infra` | 本地执行入口和本地服务 |
+| factor runner、runtime isolation、`subprocess_uv` | `10-repos/evozeus-infra` | 执行框架属于 infra |
+| report generator / local HTML dashboard | `10-repos/evozeus-infra` | 本地执行输出，不是 protocol 格式定义 |
 | Factor 抽象类草案、spec 草案、examples | `10-repos/evozeus-factor-lab` | 只定义 Python Factor contract，不存真实业务 pack |
 | 稳定 OfficialFactor 抽象类、官方 spec、canonical examples | `10-repos/evozeus-factors-official` | official 表示稳定合约，不表示 pack 发布仓库 |
-| scanner sandbox、scanner resolver、provider scanner execution | `10-repos/evozeus-runtime` | scanner 是本地执行能力，不放 factor lab |
+| scanner sandbox、scanner resolver、provider scanner execution | `10-repos/evozeus-infra` | scanner 是本地执行能力，不放 factor lab |
 | factor 业务逻辑包 / scanner pack 发布物 | 待独立发布机制或外部可信来源 | 当前不放 `factor-lab` / `factors-official` |
 | upload / GitHub issue / PR automation 规则 | `10-repos/evozeus` + optional infra action | 规则在 main；用户批准后 infra 可执行 |
 
@@ -57,7 +57,7 @@ infra = local execution kernel
 | 只改跨 repo 文档、索引、决策 | `EvoZeus-MegaRepo` | 一个 mega repo PR |
 | 只改 main protocol / governance | `10-repos/evozeus` | 子 repo PR，完成后再更新 mega repo submodule pointer |
 | 只改 community frontend | `10-repos/evozeus-community` | 子 repo PR，完成后再更新 mega repo submodule pointer |
-| 只改 infra implementation | `10-repos/evozeus-runtime` | 子 repo PR，完成后再更新 mega repo submodule pointer |
+| 只改 infra implementation | `10-repos/evozeus-infra` | 子 repo PR，完成后再更新 mega repo submodule pointer |
 | 只改 Factor contract / examples | 对应 factor repo | 子 repo PR，完成后再更新 mega repo submodule pointer |
 | 同时改协议、infra 和 Factor contract | 拆成多个 PR | 先 main protocol，再 factor contract，再 infra consumer，最后 mega repo 指针 |
 
@@ -139,7 +139,7 @@ scan fixture -> write ledger -> query sessions/results/routes -> rerun skips unc
 必须验证：
 
 - infra 只定义 scanner sandbox、resolver registry、locator envelope 和 permission gate。
-- Codex scanner pack 草稿在 `evozeus-runtime` 的实验区或独立 scanner 发布机制中声明 files read、files written、env、external commands、network、side effects。
+- Codex scanner pack 草稿在 `evozeus-infra` 的实验区或独立 scanner 发布机制中声明 files read、files written、env、external commands、network、side effects。
 - scanner 输出统一 `SessionEnvelope` 或等价标准事件模型。
 - resolver 能从 ledger locator 定位原始 event，并检测 source missing / hash mismatch。
 - scanner 默认不联网，不上传。
@@ -240,7 +240,7 @@ npm run test
 npm run build
 ```
 
-### `10-repos/evozeus-runtime`
+### `10-repos/evozeus-infra`
 
 适用：`evozeus-infra` active implementation、doctor、permission gate、lockfile、scanner sandbox、factor runner、report generator。
 
@@ -320,14 +320,14 @@ Rollback:
 
 | 顺序 | Repo | 分支建议 | 输出 |
 | --- | --- | --- | --- |
-| 1 | `10-repos/evozeus-runtime` | `codex/infra-workspace-lockfile` | active workspace/config/lockfile implementation |
-| 2 | `10-repos/evozeus-runtime` | `codex/infra-local-ledger` | SQLite Local Analysis Ledger |
+| 1 | `10-repos/evozeus-infra` | `codex/infra-workspace-lockfile` | active workspace/config/lockfile implementation |
+| 2 | `10-repos/evozeus-infra` | `codex/infra-local-ledger` | SQLite Local Analysis Ledger |
 | 3 | `10-repos/evozeus-factor-lab` | `codex/python-factor-contract-draft` | Python AbstractFactor contract draft and examples |
-| 4 | `10-repos/evozeus-runtime` | `codex/infra-scanner-resolver` | scanner sandbox + resolver contract consumer |
+| 4 | `10-repos/evozeus-infra` | `codex/infra-scanner-resolver` | scanner sandbox + resolver contract consumer |
 | 5 | `10-repos/evozeus-factors-official` | `codex/python-official-factor-contract` | stable OfficialFactor contract and canonical examples |
 | 6 | `10-repos/evozeus` | `codex/default-factor-registry-pointer` | registry pointer schema to approved factor source |
-| 7 | `10-repos/evozeus-runtime` | `codex/infra-factor-runner` | Python factor discovery + runner |
-| 8 | `10-repos/evozeus-runtime` | `codex/infra-scan-analyze-service` | onboard -> scan -> analyze -> report -> doctor |
-| 9 | `10-repos/evozeus-runtime` | `codex/infra-local-surfaces` | CLI/TUI/companion/browser workspace/report |
+| 7 | `10-repos/evozeus-infra` | `codex/infra-factor-runner` | Python factor discovery + runner |
+| 8 | `10-repos/evozeus-infra` | `codex/infra-scan-analyze-service` | onboard -> scan -> analyze -> report -> doctor |
+| 9 | `10-repos/evozeus-infra` | `codex/infra-local-surfaces` | CLI/TUI/companion/browser workspace/report |
 
 这些 PR 可以串行推进。不要把第 3 到第 7 步压进一个大 PR；否则很难判断是 protocol、contract 还是 infra consumer 出错。
