@@ -24,7 +24,7 @@
 | Public redaction | 去除 raw session、secret、客户资料和私有路径 | `evozeus-redaction` | covered |
 | Main repo contribution | Case、Candidate、semantic Factor、Pattern、Habit | `evozeus-community-contribution` | covered |
 | Session Signal SKILL / factor tools | `SKILL.md` 组合 factor tool 输出，判断历史记录价值；`factors/<slug>/` 提供可解释 tools | `evozeus-session-signal-skill/SKILL.md` + `python3 scripts/validate_official_factor_spec.py factors/*/spec.json` | covered as method + tools |
-| Static Skill wrapper / evolution | 为静态 `SKILL.md` 建立 case、run card、evaluation notes 和 evolution proposal 闭环 | `EvoZeus-wrapper/SKILL.md` + `templates/*.md` | covered as seed harness |
+| Static Skill wrapper / evolution | 由 EvoZeus 调度，为 promoted 或已有静态 `SKILL.md` 建立 repo 化、feedback、design doc、PR、CHANGELOG、release 和 preflight 闭环 | `EvoZeus-wrapper/SKILL.md` + `templates/target/*` | covered as seed harness |
 | Runtime / infra development | CLI、TUI、companion、scanner execution、local state | `evozeus-infra/SKILL.md` | covered as route |
 
 ## 2. Main Repo Scenario Skills
@@ -53,7 +53,7 @@
 | --- | --- | --- |
 | `evozeus-infra` | `SKILL.md` + `npm run test:infra-components` + `npm run test:infra-contract` | runtime enablement、infra components、permissions、default official factors、lockfile、local judgment、runtime PR |
 | `evozeus-session-signal-skill` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_official_factor_spec.py factors/*/spec.json` | Session Signal SKILL、Python OfficialFactor contract、官方 factor tools、canonical examples |
-| `EvoZeus-wrapper` | `SKILL.md` + `templates/case.md` + `templates/run-card.md` + `templates/evolution-proposal.md` | 静态 Skill 的 case、run card、evaluation notes、evolution proposal 和 regression case 工作流 |
+| `EvoZeus-wrapper` | `SKILL.md` + `templates/target/*` + `scripts/evozeus_wrapper_preflight.py` | EvoZeus 调度下的静态 Skill repo 化、feedback、design doc、PR、CHANGELOG、release 和 preflight 工作流 |
 
 ## 4. Remaining Contract Gaps
 

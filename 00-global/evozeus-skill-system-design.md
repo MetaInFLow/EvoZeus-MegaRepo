@@ -60,6 +60,7 @@ Component repo skills
 | Runtime route | `EvoZeus-Runtime Routing` | `10-repos/evozeus/skills/evozeus-runtime-routing/SKILL.md` | 从主 repo 上下文转交 runtime trust policy | 从 `evozeus-infra` 重命名，避免冲突 |
 | Infra component | `EvoZeus Infra` | `10-repos/evozeus-infra/SKILL.md` | CLI/TUI/local registry/scanner/factor execution/report execution owner | 保留 component owner，frontmatter 可改为 `evozeus-infra-component` 或保留唯一名后统一引用 |
 | Session signal component | `EvoZeus Session Signal Skill` | `10-repos/evozeus-session-signal-skill/SKILL.md` | Session Signal SKILL、Python factor tools、官方 schema、canonical examples | 保留 |
+| Static Skill wrapper component | `EvoZeus-wrapper` | `10-repos/EvoZeus-wrapper/SKILL.md` | EvoZeus 母体调度下的 static Skill repo 化、feedback、design doc、PR、CHANGELOG、release 和 preflight 闭环 | 保留 component capability，不作为独立用户入口 |
 
 命名建议：优先把主 repo scenario skill 从 `evozeus-infra` 改为 `evozeus-runtime-routing`，让 `evozeus-infra` 这个名字留给 runtime component repo。迁移期可以保留一层 deprecated alias，但正式 cluster validator 应禁止重复 `name`。
 
@@ -127,6 +128,7 @@ Web API 可以登记 hash 和公开安全 metadata；不得接收 raw session、
 | 用户打开或复制 `/skill` | `EvoZeus-Install Registration` | 安装完成后提示是否运行 protocol-only judgment | 不直接运行 runtime 或输出 Verdict |
 | 用户说“审判当前 session” | root `SKILL.md` | 必要时读 `EvoZeus-Reporting` | 不写 `.evozeus/` |
 | 用户要本地 scan / factor execution / generated file report | `EvoZeus-Runtime Routing` | `evozeus-infra/SKILL.md` | 不在主 repo 实现 runtime |
+| 用户要把 promoted 或已有本地 static Skill 包装成 repo/evolution harness | `EvoZeus-Artifact Preservation` 或 `EvoZeus-Skill Index` | `EvoZeus-wrapper/SKILL.md` | 不绕过 EvoZeus 直接把 wrapper 当用户入口 |
 | 用户要写报告正文、Verdict Card、Case summary | `EvoZeus-Reporting` | 公开前读 `EvoZeus-Redaction` | 不把 report content work 误归 runtime |
 | 用户要改 registry pointer、default official set、manifest reference | `EvoZeus-Registry Release` | runtime 只消费 verified release | 不让 runtime 绕过 registry pointer |
 | 用户要诊断失败、慢、卡住、环境问题 | `EvoZeus-Doctor Debugging` | 修改 runtime 实现时再读 runtime | 不把一次环境问题直接升级为 Skill |

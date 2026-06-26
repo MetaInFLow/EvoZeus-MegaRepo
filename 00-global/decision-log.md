@@ -4,7 +4,7 @@
 
 | 日期 | 决策 | 背景 | 影响范围 | Owner | 后续动作 |
 | --- | --- | --- | --- | --- | --- |
-| 2026-06-26 | 创建 `EvoZeus-wrapper` 作为静态 Skill wrapper harness | 静态 `SKILL.md` 需要在真实使用中留下 case、run card、evaluation notes 和 evolution proposal，才能边用边进化；但不应把 runtime、scanner、ledger 或 Session Signal 方法混入同一仓库 | EvoZeus-wrapper、EvoZeus-MegaRepo、EvoZeus、evozeus-infra、evozeus-session-signal-skill | MetaInFlow | GitHub repo 已创建并接入 mega repo submodule；第一阶段只维护 contract、模板和示例；任何执行能力路由到 `evozeus-infra` |
+| 2026-06-26 | 创建 `EvoZeus-wrapper` 作为 EvoZeus 调度的静态 Skill wrapper harness | 静态 `SKILL.md` 需要在真实使用中留下 feedback、design doc、PR、CHANGELOG、release 和 preflight 闭环，才能边用边进化；但 wrapper 不应成为独立用户入口，也不应把 runtime、scanner、ledger 或 Session Signal 方法混入同一仓库 | EvoZeus-wrapper、EvoZeus-MegaRepo、EvoZeus、evozeus-infra、evozeus-session-signal-skill | MetaInFlow | GitHub repo 已创建并接入 mega repo submodule；第一阶段只维护 contract、模板和示例；由 EvoZeus 母体决定何时路由到 wrapper；任何执行能力路由到 `evozeus-infra` |
 | 2026-06-14 | EvoZeus 默认采用 static `SKILL.md` 和 zero-install entry | 用户必须能先审阅协议再信任 runtime；raw session 默认不能上传 | EvoZeus 主 repo、官网、未来 runtime | MetaInFlow | 保持 README / SKILL / docs 的 zero-install 承诺 |
 | 2026-06-18 | 使用 EvoZeus-MegaRepo 承载全局设计和跨 repo 决策 | EvoZeus 会拆出 community、Factor lab、official packs、runtime 等多个 repo，需要统一索引 | 全部 EvoZeus repo | MetaInFlow | 持续维护 `00-global/repo-index.md`、`decision-log.md`、`material-index.md` |
 | 2026-06-20 | EvoZeus-MegaRepo 可设为 public | 当前 mega repo 只承载全局协调、索引、教程和跨 repo 决策，不应保存 raw session、客户资料、secret 或未脱敏 evidence；公开协调层有助于保持 repo topology 和治理边界透明 | EvoZeus-MegaRepo | MetaInFlow | 更新 visibility 文档；后续新增资料仍必须登记来源和敏感级别；任何 private/customer/commercial context 继续留在外部私有系统或脱敏后入仓 |
