@@ -18,15 +18,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 MAIN_REPO = ROOT / "10-repos" / "evozeus"
 MAIN_SKILLS_DIR = MAIN_REPO / "skills"
-COMMUNITY_SKILL_CONTENT = (
-    ROOT / "10-repos" / "evozeus-community" / "src" / "app" / "skill" / "skill-content.ts"
+WEB_SKILL_CONTENT = (
+    ROOT / "10-repos" / "evozeus-web" / "src" / "app" / "skill" / "skill-content.ts"
 )
 COVERAGE_DOC = ROOT / "docs" / "reference" / "skill-coverage.md"
 
 COMPONENT_SKILLS = [
     ROOT / "10-repos" / "evozeus-infra" / "SKILL.md",
-    ROOT / "10-repos" / "evozeus-factor-lab" / "SKILL.md",
-    ROOT / "10-repos" / "evozeus-factors-official" / "SKILL.md",
+    ROOT / "10-repos" / "evozeus-session-signal-skill" / "SKILL.md",
 ]
 
 EXPECTED_NAME_BY_PATH = {
@@ -47,7 +46,7 @@ FORBIDDEN_EXCLUDES = {
     ROOT / "docs" / "development-direction" / "skill-system-implementation.md",
     ROOT
     / "10-repos"
-    / "evozeus-community"
+    / "evozeus-web"
     / "src"
     / "app"
     / "skill"
@@ -135,12 +134,12 @@ def validate_skill_metadata(paths: list[Path]) -> list[str]:
 
 def validate_community_bootstrap_scope() -> list[str]:
     errors: list[str] = []
-    if not COMMUNITY_SKILL_CONTENT.exists():
-        return [f"{COMMUNITY_SKILL_CONTENT}: missing community skill content"]
+    if not WEB_SKILL_CONTENT.exists():
+        return [f"{WEB_SKILL_CONTENT}: missing web skill content"]
 
-    text = COMMUNITY_SKILL_CONTENT.read_text(encoding="utf-8")
+    text = WEB_SKILL_CONTENT.read_text(encoding="utf-8")
     required_tokens = [
-        "# EvoZeus Community Bootstrap Skill",
+        "# EvoZeus Web Bootstrap Skill",
         "root \\`SKILL.md\\`",
         "不要在 bootstrap skill 里复制完整 scenario routing",
         "npm run test:infra-components",
@@ -148,7 +147,7 @@ def validate_community_bootstrap_scope() -> list[str]:
 
     for token in required_tokens:
         if token not in text:
-            errors.append(f"{COMMUNITY_SKILL_CONTENT}: missing bootstrap token {token!r}")
+            errors.append(f"{WEB_SKILL_CONTENT}: missing bootstrap token {token!r}")
 
     forbidden_tokens = [
         "skills/evozeus-runtime/SKILL.md",
@@ -159,7 +158,7 @@ def validate_community_bootstrap_scope() -> list[str]:
 
     for token in forbidden_tokens:
         if token in text:
-            errors.append(f"{COMMUNITY_SKILL_CONTENT}: community bootstrap duplicates routing token {token!r}")
+            errors.append(f"{WEB_SKILL_CONTENT}: web bootstrap duplicates routing token {token!r}")
 
     return errors
 
@@ -174,8 +173,7 @@ def validate_docs_coverage(skill_paths: list[Path]) -> list[str]:
         "evozeus-install-registration",
         "evozeus-runtime-routing",
         "evozeus-infra/SKILL.md",
-        "evozeus-factor-lab/SKILL.md",
-        "evozeus-factors-official/SKILL.md",
+        "evozeus-session-signal-skill/SKILL.md",
     ]
 
     for token in required_tokens:
@@ -200,7 +198,7 @@ def validate_forbidden_active_references() -> list[str]:
         ROOT / "00-global",
         ROOT / "docs",
         ROOT / "10-repos" / "evozeus",
-        ROOT / "10-repos" / "evozeus-community" / "src" / "app",
+        ROOT / "10-repos" / "evozeus-web" / "src" / "app",
     ]
 
     for search_root in search_roots:

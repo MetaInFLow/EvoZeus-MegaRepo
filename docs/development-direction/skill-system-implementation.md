@@ -1,11 +1,13 @@
 # Skill System Implementation Plan
 
 - Status: implemented in PR branch
-- Last updated: 2026-06-19
-- Scope: EvoZeus Skill 体系 review 后的整改实施路线
+- Last updated: 2026-06-21
+- Scope: EvoZeus Skill 支撑体系 review 后的整改实施路线
 - Owner: MetaInFlow
 
 本文是 `00-global/evozeus-skill-system-design.md` 的实施文档。目标不是一次性重写所有 skill，而是按风险顺序把入口、命名、路由和校验闭环补齐。
+
+边界说明：本文中的 P0/P1 是 Skill 支撑体系内部的整改优先级，不代表 EvoZeus 全局产品优先级。全局 P0 是通过社区真实案例迭代“判断高质量信号”的方法论；Skill 体系只负责 agent-readable 接入、路由和稳定行为固化。
 
 ## 1. 背景
 
@@ -17,7 +19,7 @@
 - `runtime` / `registry-release`、`reporting` / `runtime`、`doctor` / `runtime`、`development` / `skill-proposal` 的 precedence 不够硬。
 - `check_pr_ready.py` 只检查主 repo 内部 skill，不能发现跨 repo duplicate name 或 historical prototype `SKILL.md` 误发现。
 
-## 2. 实施目标
+## 2. 支撑目标
 
 | Goal | Done means |
 | --- | --- |
@@ -42,7 +44,7 @@
 
 **Owner repos**
 
-- `EvoZeus-community`
+- `evozeus-web`
 - `EvoZeus`
 - `EvoZeus-MegaRepo`
 
@@ -50,9 +52,9 @@
 
 | File | Change |
 | --- | --- |
-| `10-repos/evozeus-community/src/app/skill/skill-content.ts` | 改成 registration / install guide；移除“Agent Skill Router”主语；不要求直接输出 Verdict / Evidence Report |
-| `10-repos/evozeus-community/src/app/skill/route.test.ts` | 测试 `/skill` 包含 `.evozeus` 检查、skeleton install、skills install、install inventory、next command |
-| `10-repos/evozeus-community/src/app/page.tsx` | 首页把 `/skill` 描述为注册和安装入口，不承诺直接进入因子库或 runtime |
+| `10-repos/evozeus-web/src/app/skill/skill-content.ts` | 改成 registration / install guide；移除“Agent Skill Router”主语；不要求直接输出 Verdict / Evidence Report |
+| `10-repos/evozeus-web/src/app/skill/route.test.ts` | 测试 `/skill` 包含 `.evozeus` 检查、skeleton install、skills install、install inventory、next command |
+| `10-repos/evozeus-web/src/app/page.tsx` | 首页把 `/skill` 描述为注册和安装入口，不承诺直接进入因子库或 runtime |
 | `10-repos/evozeus/SKILL.md` | 把 `#register` / old host 更新为 `/skill`；声明 `/skill` 完成安装后才进入 root protocol judgment |
 | `10-repos/evozeus/skills/evozeus-start-here-onboarding/SKILL.md` | 收窄为安装后的 first-use protocol-only judgment，不再负责注册安装 |
 | `10-repos/evozeus/docs/README.zh-CN.md` | 同步英文 README 的 Registration / Install Sequence |
@@ -61,7 +63,7 @@
 
 **Acceptance criteria**
 
-- `rg -n "community/#register|/#register|/register|Agent Skill Router|不是单一注册说明" 00-global docs 10-repos/evozeus 10-repos/evozeus-community -g '!docs/development-direction/skill-system-implementation.md' -g '!10-repos/evozeus-community/src/app/skill/route.test.ts'` 不再命中需要废弃的入口语义。
+- `rg -n "community/#register|/#register|/register|Agent Skill Router|不是单一注册说明" 00-global docs 10-repos/evozeus 10-repos/evozeus-web -g '!docs/development-direction/skill-system-implementation.md' -g '!10-repos/evozeus-web/src/app/skill/route.test.ts'` 不再命中需要废弃的入口语义。
 - `/skill` 输出中必须包含：
   - 检查 `.evozeus` 是否存在。
   - 已注册 / 未注册 / 本地缺失但远端存在的处理方式。
@@ -136,7 +138,7 @@ description: Use when registering a local EvoZeus workspace, installing the EvoZ
 **Acceptance criteria**
 
 - cluster-level validator 没有 duplicate `name`。
-- `rg -n "evozeus-infra" docs 00-global 10-repos/evozeus 10-repos/evozeus-community` 中能区分 route skill 和 component repo。
+- `rg -n "evozeus-infra" docs 00-global 10-repos/evozeus 10-repos/evozeus-web` 中能区分 route skill 和 component repo。
 
 ## 7. Workstream D：补硬 precedence
 
@@ -167,27 +169,28 @@ description: Use when registering a local EvoZeus workspace, installing the EvoZ
 - root `SKILL.md` 不再把 report、runtime、install 混在同一条描述里。
 - 每个受影响 skill 有最小 Output Shape。
 
-## 8. Workstream E：统一 Factor contract repo 口径
+## 8. Workstream E：移除 lab active route，收敛 Session Signal SKILL / tools
 
 **Decision to implement**
 
-`evozeus-factor-lab` 和 `evozeus-factors-official` 只承载 Python Factor contract、schema 和 examples；不承载真实业务 Factor pack、scanner module 或 release 物。
+2026-06-21 后，`evozeus-factor-lab` 转为 private/internal，并从 mega repo active topology 移除。`evozeus-session-signal-skill` 改定位为 Session Signal SKILL：`SKILL.md` 组合 factor tool 输出判断什么样的历史记录是高价值的，`factors/<slug>/` 是可调用、可解释、可测试的 tools。
 
 **Required changes**
 
 | File | Change |
 | --- | --- |
-| `10-repos/evozeus-factor-lab/README.md` | 明确只维护 Python `AbstractFactor`、spec、examples |
-| `10-repos/evozeus-factors-official/README.md` | 明确只维护 Python `OfficialFactor`、官方 schema、canonical examples |
-| `docs/reference/skill-coverage.md` | 明确 component skill 覆盖 contract，不覆盖 pack release |
-| `docs/tutorials/factor-lab.md` | 改为 contract lab tutorial |
-| `docs/tutorials/official-factors.md` | 改为 official contract tutorial |
+| `.gitmodules` | 移除 `10-repos/evozeus-factor-lab` submodule |
+| `.gitignore` | 忽略本地 private `10-repos/evozeus-factor-lab/` checkout |
+| `10-repos/evozeus-factor-lab/SKILL.md` | 改为 private/internal lab skill，不再描述 public component route |
+| `10-repos/evozeus-session-signal-skill/README.md` | 明确 Session Signal SKILL + factor tools 定位 |
+| `docs/reference/skill-coverage.md` | 明确 component skill 覆盖 official method + tools，不覆盖 pack release |
+| `docs/tutorials/session-signal-skill.md` | 改为 Session Signal SKILL / factor tools tutorial |
 
 **Acceptance criteria**
 
-- 没有文档要求 `submissions/`、`reviewed/`、`rejected/` 存在于 factor lab。
-- 没有文档要求 `packs/`、`manifests/`、`checksums/`、`attestations/` 存在于 official factors。
-- 两个 factor repo 的验证命令均为 Python contract tests 和 spec validator。
+- active docs 不再把 `evozeus-factor-lab` 当作 public route、formal skill 或 runtime source。
+- 没有文档要求 `packs/`、`manifests/`、`checksums/`、`attestations` 存在于 official factors。
+- official repo 的验证命令为 Python tests 和 `factors/*/spec.json` validator。
 
 ## 9. Workstream F：新增 cluster-level validator
 
@@ -204,8 +207,7 @@ Given this mega repo already uses `docs/reference/skill-coverage.md` as cluster-
    - `10-repos/evozeus/SKILL.md`
    - `10-repos/evozeus/skills/*/SKILL.md`
    - `10-repos/evozeus-infra/SKILL.md`
-   - `10-repos/evozeus-factor-lab/SKILL.md`
-   - `10-repos/evozeus-factors-official/SKILL.md`
+   - `10-repos/evozeus-session-signal-skill/SKILL.md`
 2. Exclude:
    - `node_modules`
    - `10-repos/evozeus-infra/prototypes/main-repo-runtime/**`
@@ -244,7 +246,7 @@ Both pass.
 
 | Repo | Command |
 | --- | --- |
-| `EvoZeus-community` | `npm test` |
+| `evozeus-web` | `npm test` |
 | `EvoZeus` | `/usr/bin/python3 -m py_compile scripts/check_pr_ready.py` |
 | `EvoZeus` | `git diff --check` |
 | `EvoZeus-MegaRepo` | `python3 scripts/validate_skill_system.py` |

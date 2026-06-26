@@ -4,12 +4,12 @@
 
 - 项目产出文件默认用中文，关键专有名词、专业名词可以用英文。
 - Feishu 相关的操作用 `larkcli`。
-- 本空间为 EvoZeus mega repo，归属 `metainflow private`。
+- 本空间为 EvoZeus mega repo，归属 `MetaInFlow`，仓库可 public。
 
 ## 空间职责
 
 - 统一管理 EvoZeus 全局 repo、资料、索引、运行记录和跨项目决策。
-- 对外部资料、客户资料、商业信息默认按 private 内容处理。
+- 即使仓库可 public，对外部资料、客户资料、商业信息仍默认按 private 内容处理。
 - 新增资料时优先建立索引和来源说明，避免上下文丢失。
 
 ## 目录约定

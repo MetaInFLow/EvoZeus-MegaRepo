@@ -1,14 +1,14 @@
 # EvoZeus Mega Repo Docs
 
 - Status: active
-- Last updated: 2026-06-18
+- Last updated: 2026-06-20
 - Scope: EvoZeus mega repo 的人类可读入口、开发方向和 tutorial 导航
 - Owner: MetaInFlow
 
 本文是 `EvoZeus-MegaRepo` 的介绍文档。它回答三个问题：
 
 1. 这个 mega repo 是什么。
-2. EvoZeus 接下来应该往哪里开发。
+2. EvoZeus 如何围绕“高质量信号判断方法论”校准开发方向。
 3. 每个 repo、资料区和运营区应该怎么开始使用。
 
 `docs/` 是面向人的阅读层；`00-global/` 是跨 repo 决策、索引和架构底账。阅读、协作、onboarding 先看 `docs/`；需要查正式决策、repo index、权限模型时再进入 `00-global/`。
@@ -34,7 +34,7 @@
 
 | 主线 | 目录 | 目标 |
 | --- | --- | --- |
-| 定义开发方向 | `development-direction/` | 说明 EvoZeus 当前阶段的开发重点、优先级、repo 分工和完成标准 |
+| 定义开发方向 | `development-direction/` | 说明 EvoZeus 当前阶段的高质量信号方法论、开发重点、优先级、repo 分工和完成标准 |
 | Tutorial 介绍 | `tutorials/` | 让新人或 Agent 能按部分理解每个 repo / 工作区怎么用、产出什么、不要做什么 |
 
 辅助目录：
@@ -63,13 +63,13 @@ flowchart TB
   B --> B1["当前阶段目标"]
   B --> B2["repo 分工"]
   B --> B3["优先级与完成标准"]
+  B --> B4["高质量信号方法论"]
 
   C --> C1["mega repo workspace"]
   C --> C2["user journey"]
   C --> C3["EvoZeus 主 repo"]
-  C --> C4["community frontend"]
-  C --> C5["factor lab"]
-  C --> C6["official factors"]
+  C --> C4["web frontend"]
+  C --> C5["Session Signal SKILL / factor tools"]
   C --> C7["runtime"]
   C --> C8["materials / ops"]
 

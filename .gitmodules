@@ -1,15 +1,12 @@
 [submodule "10-repos/evozeus"]
 	path = 10-repos/evozeus
 	url = https://github.com/MetaInFLow/EvoZeus.git
-[submodule "10-repos/evozeus-community"]
-	path = 10-repos/evozeus-community
-	url = https://github.com/MetaInFLow/EvoZeus-community.git
-[submodule "10-repos/evozeus-factor-lab"]
-	path = 10-repos/evozeus-factor-lab
-	url = https://github.com/MetaInFLow/evozeus-factor-lab.git
-[submodule "10-repos/evozeus-factors-official"]
-	path = 10-repos/evozeus-factors-official
-	url = https://github.com/MetaInFLow/evozeus-factors-official.git
+[submodule "10-repos/evozeus-session-signal-skill"]
+	path = 10-repos/evozeus-session-signal-skill
+	url = https://github.com/MetaInFLow/evozeus-session-signal-skill.git
 [submodule "10-repos/evozeus-infra"]
 	path = 10-repos/evozeus-infra
 	url = https://github.com/MetaInFLow/evozeus-infra.git
+[submodule "10-repos/evozeus-web"]
+	path = 10-repos/evozeus-web
+	url = https://github.com/MetaInFLow/evozeus-web.git
