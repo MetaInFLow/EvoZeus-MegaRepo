@@ -26,6 +26,7 @@ direction
 - 每个 repo 承担什么职责。
 - 哪些 repo 应该 public / private。
 - Factor tools、runtime、community、Session Signal SKILL 如何协同。
+- 静态 Skill 如何在真实使用中留下 case、run card 和 evolution proposal。
 - 新资料、会议纪要、Feishu 导出、运营动作应该放哪里。
 - 新人或 agent 应该从哪篇 tutorial 开始。
 
@@ -83,6 +84,7 @@ Read the root README, docs/README.md, and docs/tutorials/README.md. Identify whi
 | 改主 protocol | `10-repos/evozeus` |
 | 改官网 | `10-repos/evozeus-web` |
 | 维护 Session Signal SKILL / factor tools | `10-repos/evozeus-session-signal-skill` |
+| 维护静态 Skill wrapper / 演进 harness | `10-repos/EvoZeus-wrapper` |
 | 规划 infra | `10-repos/evozeus-infra` |
 | 放资料 / Feishu 导出 | `20-materials/` + `00-global/material-index.md` |
 | 放运营 / 发布 / 权限执行 | `30-ops/` |
@@ -94,6 +96,7 @@ EvoZeus-MegaRepo
   -> EvoZeus                 public protocol / governance
   -> evozeus-web       web surface
   -> evozeus-session-signal-skill Session Signal SKILL / factor tools
+  -> EvoZeus-wrapper        static SKILL wrapper harness
   -> evozeus-infra          future local infra
 ```
 

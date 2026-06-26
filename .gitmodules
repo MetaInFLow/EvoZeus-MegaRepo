@@ -10,3 +10,6 @@
 [submodule "10-repos/evozeus-web"]
 	path = 10-repos/evozeus-web
 	url = https://github.com/MetaInFLow/evozeus-web.git
+[submodule "10-repos/EvoZeus-wrapper"]
+	path = 10-repos/EvoZeus-wrapper
+	url = https://github.com/MetaInFLow/EvoZeus-wrapper.git
