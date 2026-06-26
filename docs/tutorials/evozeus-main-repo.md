@@ -29,8 +29,7 @@
 2. 保持 PR 小范围，不混合 runtime code、governance、docs 和 community Case。
 3. Factor 相关改动先问：这是 Candidate / registry pointer、contract，还是 pack / scanner？
    - Candidate / registry pointer 留在主 repo。
-   - Python contract 草案路由到 `evozeus-factor-lab`。
-   - 稳定 official contract 路由到 `evozeus-factors-official`。
+   - Session Signal SKILL、factor tool contract、canonical examples 路由到 `evozeus-session-signal-skill`。
    - pack / scanner 不进入主 repo 或 factor contract repo，路由到 runtime 或后续独立发布机制。
 4. Runtime 相关改动先问：这是 protocol / trust policy，还是执行实现？
    - protocol、trust policy、registry contract 可留在主 repo。

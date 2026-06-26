@@ -2,7 +2,7 @@
 
 ## 目标
 
-理解用户从 `evozeus-community/skill` 进入后，如何先完成注册、安装 EvoZeus skeleton 与 EvoZeus skills，再在用户确认后按需拼接 runtime、default factors、judgment 和沉淀路径。
+理解用户从 `evozeus-web/skill` 进入后，如何先完成注册、安装 EvoZeus skeleton 与 EvoZeus skills，再在用户确认后按需拼接 runtime、default factors、judgment 和沉淀路径。
 
 ## 适合谁
 
@@ -18,8 +18,7 @@
 - `../../10-repos/evozeus/SKILL.md`
 - `../../10-repos/evozeus/skills/index/SKILL.md`
 - `runtime.md`
-- `factor-lab.md`
-- `official-factors.md`
+- `session-signal-skill.md`
 
 ## 操作步骤
 
@@ -57,7 +56,7 @@
 | --- | --- |
 | Case / Evidence / judgment report | `EvoZeus` issue 或 Candidate PR |
 | semantic Factor proposal | 先进入 `EvoZeus` 主 repo |
-| Python Factor contract / example | `evozeus-factor-lab` 或 `evozeus-factors-official` |
+| Session Signal SKILL / factor tool method | `evozeus-session-signal-skill` |
 | executable Factor pack / scanner module | 不进入 factor contract repo；按 runtime / 独立发布机制处理 |
 | runtime / infra / CLI / scanner execution / local state | `evozeus-infra` |
 
@@ -71,7 +70,7 @@
 
 - 不要把 `/skill` 变成 judgment 或 runtime 执行入口。
 - 不要把 Start Here 变成静默安装。
-- 不要让 runtime 直接消费 lab examples。
+- 不要让 runtime 直接消费 private lab、未审 source 或 official repo 的测试 examples。
 - 不要把 executable Factor pack、scanner module 或 runtime infra PR 提到 `EvoZeus` 主 repo 或 factor contract repo。
 - 不要上传 raw private session。
 - 不要绕过 source pointer、完整性校验、contract version 或用户确认。
@@ -81,7 +80,7 @@
 检查这条链路是否成立：
 
 ```text
-evozeus-community/skill
+evozeus-web/skill
   -> EvoZeus-Install Registration
   -> .evozeus reconciliation
   -> EvoZeus skeleton + skills installed

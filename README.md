@@ -2,7 +2,9 @@
 
 EvoZeus 的全局协调工作区：定义方向、组织 repo、保存决策、承接资料和维护跨 repo tutorial。
 
-这个 repo 不是产品入口本身。产品协议入口在 `10-repos/evozeus`；本 repo 是 MetaInFlow 内部用来协调 EvoZeus 全局系统的 operation contract。
+这个 repo 不是产品入口本身。产品协议入口在 `10-repos/evozeus`；本 repo 是 MetaInFlow 用来协调 EvoZeus 全局系统的 public-ready operation contract。
+
+当前北极星：通过社区真实案例，持续迭代“如何判断高质量信号”的方法论。Skill、Factor、Pattern、Habit、Environment Rule 都只是方法论沉淀后的可能载体，不是默认目标。
 
 ```text
 direction
@@ -14,14 +16,16 @@ direction
 
 ## What It Is
 
-`EvoZeus-MegaRepo` 是 EvoZeus 的 private mega workspace。
+`EvoZeus-MegaRepo` 是 EvoZeus 的 public coordination workspace。
 
 它负责回答：
 
+- 什么是高质量信号，如何用 Evidence、Case、Verdict 和反例复核它。
+- 社区观察如何从一次 session 发现，进入可审查、可复用的方法论资产。
 - EvoZeus 当前开发方向是什么。
 - 每个 repo 承担什么职责。
 - 哪些 repo 应该 public / private。
-- Factor、runtime、community、official release 如何协同。
+- Factor tools、runtime、community、Session Signal SKILL 如何协同。
 - 新资料、会议纪要、Feishu 导出、运营动作应该放哪里。
 - 新人或 agent 应该从哪篇 tutorial 开始。
 
@@ -31,6 +35,7 @@ direction
 
 - 不替代 `EvoZeus` 主 repo 的 public protocol。
 - 不接收普通社区贡献。
+- 不把生成 Skill 当作默认或主要产出。
 - 不存 raw private session、客户资料、secret 或未脱敏日志。
 - 不直接发布 official Factor pack。
 - 不直接运行 runtime scanner。
@@ -62,22 +67,22 @@ Read the root README, docs/README.md, and docs/tutorials/README.md. Identify whi
 | --- | --- | --- |
 | Maintainer | 需要跨 repo 决策、submodule 指针、权限设计 | 变更只属于单一业务 repo |
 | Agent | 需要判断任务应该落到哪个 repo / docs / ops | 无法确认 privacy boundary |
-| Operator | 需要整理资料、Feishu 导出、发布或权限计划 | 内容应进入 public main repo |
+| Operator | 需要整理资料、Feishu 导出、发布或权限计划 | 内容需要进入单一业务 repo |
 | Product owner | 需要定义开发方向或当前优先级 | 决策没有 owner 或 evidence |
 
 ## Task Routes
 
 | 你要做什么 | 去哪里 |
 | --- | --- |
+| 校准项目目标 / 方法论 | `docs/development-direction/high-quality-signal-methodology.md` |
 | 查全局设计 | `00-global/evozeus-overall-design.md` |
 | 查 repo 权限和可见性 | `00-global/repo-index.md` |
 | 记录跨 repo 决策 | `00-global/decision-log.md` |
 | 理解开发方向 | `docs/development-direction/README.md` |
 | 找 tutorial | `docs/tutorials/README.md` |
 | 改主 protocol | `10-repos/evozeus` |
-| 改官网 | `10-repos/evozeus-community` |
-| 处理 Factor lab | `10-repos/evozeus-factor-lab` |
-| 发布 official factors | `10-repos/evozeus-factors-official` |
+| 改官网 | `10-repos/evozeus-web` |
+| 维护 Session Signal SKILL / factor tools | `10-repos/evozeus-session-signal-skill` |
 | 规划 infra | `10-repos/evozeus-infra` |
 | 放资料 / Feishu 导出 | `20-materials/` + `00-global/material-index.md` |
 | 放运营 / 发布 / 权限执行 | `30-ops/` |
@@ -87,9 +92,8 @@ Read the root README, docs/README.md, and docs/tutorials/README.md. Identify whi
 ```text
 EvoZeus-MegaRepo
   -> EvoZeus                 public protocol / governance
-  -> evozeus-community       community surface
-  -> evozeus-factor-lab      Factor pack / scanner incubation
-  -> evozeus-factors-official official Factor release source
+  -> evozeus-web       web surface
+  -> evozeus-session-signal-skill Session Signal SKILL / factor tools
   -> evozeus-infra          future local infra
 ```
 
@@ -97,7 +101,7 @@ EvoZeus-MegaRepo
 
 本 repo 的默认契约：
 
-- private by default。
+- repo 可 public；evidence、客户上下文和商业资料 private by default。
 - raw session 不入仓。
 - private customer context 不入仓。
 - repo visibility、权限、release、拆 repo 决策必须写入 `decision-log.md`。
@@ -117,17 +121,18 @@ EvoZeus-MegaRepo
 
 ## Current Status
 
-- Repo visibility: private。
+- Repo visibility: public。
 - Submodules: active。
+- Removed active submodule: `evozeus-factor-lab`；该 repo 已转为 private/internal，不再由 mega repo 管理。
 - Main public protocol repo: `10-repos/evozeus`。
 - Current docs layer: `docs/`。
 - Current decision source: `00-global/decision-log.md`。
 
 ## Not Promised
 
-- 不保证这里的所有 private 决策都已公开同步。
+- 不保证这里的所有历史私有决策都已公开同步。
 - 不保证 submodule branch 都是默认可 merge 状态。
-- 不保证资料区内容适合公开。
+- 不保证外部原始资料适合入仓；入仓前必须脱敏并登记敏感级别。
 - 不保证 runtime 或 official Factor release 已稳定。
 
 ## Validation

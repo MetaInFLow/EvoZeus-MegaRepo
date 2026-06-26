@@ -35,7 +35,7 @@
    - 外部命令调用。
 3. 默认 local-first，不自动上传 raw session。
 4. scanner / factor code / MCP / LLM / visualization pack 必须显式启用。
-5. runtime 不直接消费 Discord thread、factor lab examples 或未审 source。
+5. runtime 不直接消费 Discord thread、private lab、official repo 测试 examples 或未审 source。
 6. 任何从旧 prototype 设计意图延伸出的代码，都必须重新声明权限、依赖、sandbox、默认关闭行为和 public install gate。
 
 ## 产出

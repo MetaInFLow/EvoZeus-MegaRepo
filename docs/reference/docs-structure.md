@@ -18,9 +18,8 @@ docs/
     user-journey.md
     mega-repo-workspace.md
     evozeus-main-repo.md
-    community-frontend.md
-    factor-lab.md
-    official-factors.md
+    web-frontend.md
+    session-signal-skill.md
     runtime.md
     materials-and-ops.md
   reference/
@@ -42,7 +41,7 @@ docs/
 
 ## 3. 命名规则
 
-- 文件名使用 lower kebab-case：`factor-lab.md`。
+- 文件名使用 lower kebab-case：`session-signal-skill.md`。
 - 目录名使用语义名称，不用 `misc`、`temp`、`new`。
 - tutorial 文件名以对象命名，不加 `tutorial-` 前缀，因为目录已经表达类型。
 - 方向文档优先用稳定主题命名，例如 `README.md`、`current-focus.md`、`release-sequence.md`。

@@ -1,30 +1,29 @@
 # Skill Coverage
 
 - Status: active
-- Last updated: 2026-06-19
-- Scope: EvoZeus 用户旅程和 component repo 的 Skill 覆盖矩阵
+- Last updated: 2026-06-20
+- Scope: EvoZeus agent 接入和 component repo 的 Skill 支撑覆盖矩阵
 - Owner: MetaInFlow
 
-本文记录从 `evozeus-community /skill` 到 registration、install、judgment、沉淀和开发分流的 Skill 覆盖。它不是 release checklist；release checklist 仍属于各 component repo。
+本文记录从 `evozeus-web /skill` 到 registration、install、judgment、沉淀和开发分流的 Skill 覆盖。它不是 release checklist，也不是项目主目标或 KPI；release checklist 仍属于各 component repo。EvoZeus 的主线是通过社区迭代“判断高质量信号”的方法论，Skill 只是让 Agent 可读、可路由、可复用的支撑层。
 
 ## 1. 用户旅程覆盖
 
 | Step | 目标 | Skill / 入口 | 状态 |
 | --- | --- | --- | --- |
-| Registration guide | 用户从 community `/skill` 复制安装指令 | `evozeus-community` page | covered |
+| Registration guide | 用户从 community `/skill` 复制安装指令 | `evozeus-web` page | covered |
 | Install / reconcile | 检查 `.evozeus`，注册或恢复，安装 skeleton 和 skills | `EvoZeus/skills/evozeus-install-registration` | covered |
 | Start Here | 安装后的首次 protocol-only judgment | `EvoZeus/skills/evozeus-start-here-onboarding` + `EvoZeus/SKILL.md` | covered |
 | Scenario routing | 选择 runtime、report、redaction、contribution、development 等场景 | `EvoZeus/skills/index/SKILL.md` | covered |
 | First judgment | 在回复中输出 Session Verdict Card | `EvoZeus/SKILL.md` + `evozeus-reporting` | covered |
 | Runtime approval | 用户确认本地执行、读取、写入、安装和网络行为 | `EvoZeus/skills/evozeus-runtime-routing` + `evozeus-infra/SKILL.md` | covered as policy |
-| Default factors | 从 registry pointer 解析 default factor source 和 contract version | `evozeus-registry-release` + `evozeus-infra/SKILL.md` + `evozeus-infra/test:infra-contract` | covered as policy; implementation future |
-| Official Factor contract | 校验 Python `OfficialFactor` contract、schema 和 canonical examples | `evozeus-factors-official/SKILL.md` + `python3 -m unittest discover -s tests` | covered as contract |
+| Default factor tools | 从 registry pointer 解析 default factor source 和 contract version | `evozeus-registry-release` + `evozeus-infra/SKILL.md` + `evozeus-infra/test:infra-contract` | covered as policy; implementation future |
+| Session Signal SKILL / factor tools | 用 official factor tools 识别高价值 session，并校验 Python `OfficialFactor` contract、schema 和 canonical examples | `evozeus-session-signal-skill/SKILL.md` + `python3 -m unittest discover -s tests` | covered as method + tools |
 | Local runtime execution | 扫描、运行 factors、生成 report、写 lockfile | `evozeus-infra/SKILL.md` + `evozeus-infra/test:infra-components` | component availability covered; product implementation still future |
 | Preservation decision | 用户确认是否沉淀 | `evozeus-artifact-preservation` | covered |
 | Public redaction | 去除 raw session、secret、客户资料和私有路径 | `evozeus-redaction` | covered |
 | Main repo contribution | Case、Candidate、semantic Factor、Pattern、Habit | `evozeus-community-contribution` | covered |
-| Factor contract lab | Python `AbstractFactor` 草案、spec、examples | `evozeus-factor-lab/SKILL.md` + `python3 -m unittest discover -s tests` | covered as contract |
-| Official Factor contract | 稳定 Python `OfficialFactor`、官方 schema、canonical examples | `evozeus-factors-official/SKILL.md` + `python3 scripts/validate_official_factor_spec.py examples/specs/*.json` | covered as contract |
+| Session Signal SKILL / factor tools | `SKILL.md` 组合 factor tool 输出，判断历史记录价值；`factors/<slug>/` 提供可解释 tools | `evozeus-session-signal-skill/SKILL.md` + `python3 scripts/validate_official_factor_spec.py factors/*/spec.json` | covered as method + tools |
 | Runtime / infra development | CLI、TUI、companion、scanner execution、local state | `evozeus-infra/SKILL.md` | covered as route |
 
 ## 2. Main Repo Scenario Skills
@@ -52,8 +51,7 @@
 | Repo | Skill | 职责 |
 | --- | --- | --- |
 | `evozeus-infra` | `SKILL.md` + `npm run test:infra-components` + `npm run test:infra-contract` | runtime enablement、infra components、permissions、default official factors、lockfile、local judgment、runtime PR |
-| `evozeus-factor-lab` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_factor_spec.py examples/specs/*.json` | Python AbstractFactor 草案、Factor spec、examples |
-| `evozeus-factors-official` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_official_factor_spec.py examples/specs/*.json` | Python OfficialFactor 稳定 contract、官方 spec、canonical examples |
+| `evozeus-session-signal-skill` | `SKILL.md` + `python3 -m unittest discover -s tests` + `python3 scripts/validate_official_factor_spec.py factors/*/spec.json` | Session Signal SKILL、Python OfficialFactor contract、官方 factor tools、canonical examples |
 
 ## 4. Remaining Contract Gaps
 
@@ -61,7 +59,7 @@
 
 1. Main registry schema / index。
 2. Default factor set 的 source pointer、contract version、recommended vs enabled、channel、version pinning 行为。
-3. 真实业务 Factor pack 的发布机制尚未定义，不能落在 `factor-lab` 或 `factors-official`。
+3. 真实业务 Factor pack 的发布机制尚未定义，不能落在 `evozeus-session-signal-skill`。
 4. Runtime lockfile schema、registry consumer implementation。
 5. CI 集成：当前已有本地 `npm test`，尚未接入 GitHub Actions。
 

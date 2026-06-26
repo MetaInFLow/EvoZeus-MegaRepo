@@ -33,11 +33,10 @@ GitHub repo 命名建议：
 | Repo | 建议名称 | 说明 |
 | --- | --- | --- |
 | 主协议 repo | `EvoZeus` | 保留品牌大小写，作为 public canonical repo |
-| 官网 / 社区入口源码 | `evozeus-community` | Web 源码保持 private；如未来重命名，可从 `EvoZeus-community` 统一为 lower kebab-case |
-| Factor lab | `evozeus-factor-lab` | 已符合规则 |
-| Official Factor contract | `evozeus-factors-official` | 已符合规则；official 指稳定 contract，不指 pack 仓库 |
+| 官网 / Web 入口源码 | `evozeus-web` | Web 源码保持 private；repo 已统一为 lower kebab-case |
+| Session Signal SKILL / factor tools | `evozeus-session-signal-skill` | 已符合规则；official 指官方判断方法和 tools，不指 pack 仓库 |
 | Runtime | `evozeus-infra` | 已符合规则 |
-| Private workspace | `EvoZeus-MegaRepo` 或未来 `evozeus-workspace` | 当前可保留；若希望减少内部感，后续可改名为 `evozeus-workspace` |
+| Coordination workspace | `EvoZeus-MegaRepo` 或未来 `evozeus-workspace` | 当前可保留；若希望减少内部感，后续可改名为 `evozeus-workspace` |
 | Future skill distribution | `evozeus-skills` | deferred，不创建；只在 reviewed/core Skills 需要独立安装时使用 |
 
 命名原则：
@@ -46,14 +45,13 @@ GitHub repo 命名建议：
 - public canonical product repo 可保留品牌名：`EvoZeus`。
 - 不在 repo 名里使用 `repo`、`new`、`temp`、`v2`、`final`。
 - 用单数还是复数看资产类型：
-  - `factor-lab`：一个 Factor contract 实验室，单数 lab。
-  - `factors-official`：官方稳定 Factor contract 和 examples，复数 factors。
+  - `session-signal-skill`：官方超级 SKILL 和一组 factor tools，复数 factors。
   - `runtime`：一个运行时产品面，单数 runtime。
   - `skills`：未来多个可安装 skills，复数 skills。
 
 ## 3. Mega Repo 目录
 
-当前数字前缀可以保留，因为这是 private workspace，排序价值高于 public 美观。
+当前数字前缀可以保留，因为这是协调工作区，排序价值高于目录名的 public 美观。
 
 ```text
 EvoZeus-MegaRepo/
@@ -72,9 +70,8 @@ EvoZeus-MegaRepo/
     reference/
   10-repos/
     evozeus/
-    evozeus-community/
-    evozeus-factor-lab/
-    evozeus-factors-official/
+    evozeus-web/
+    evozeus-session-signal-skill/
     evozeus-infra/
   20-materials/
   30-ops/
@@ -105,7 +102,7 @@ EvoZeus-MegaRepo/
 | semantic Factor / Skill / Pattern proposal | `.evozeus/` local state、SQLite ledger、lockfile |
 | factor source pointer / registry reference | report execution、pack execution、upload / network runtime |
 
-旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-infra`；`factor-lab` / `factors-official` 只负责 Factor contract，不负责 installable pack 或 scanner pack。主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
+旧主 repo 执行层结构与目标职责不一致，已从主 repo 清理。执行层归 `evozeus-infra`；`evozeus-session-signal-skill` 只负责 Session Signal SKILL 和 factor tools，不负责 installable pack 或 scanner pack。主 repo 不应重新引入 runtime implementation、installable pack 或 scanner pack。
 
 建议结构：
 
@@ -230,61 +227,30 @@ skills/evozeus-<scenario>/
 - `assets/` 只放 skill 执行需要的静态素材。
 - `scripts/` 只放 skill 专属脚本；跨 skill 脚本放 repo 根部 `scripts/`。
 
-## 6. Factor Lab 目录
+## 6. Session Signal Skill 目录
 
-定位：Python Factor contract lab，不是普通 Case 入口、pack 孵化层或 scanner module 仓库。
-
-建议结构：
-
-```text
-evozeus-factor-lab/
-  AGENTS.md
-  README.md
-  pyproject.toml
-  src/
-    evozeus_factor_lab/
-      __init__.py
-      factor.py
-  schemas/
-    factor-spec.schema.json
-  examples/
-    factors/
-    specs/
-    sessions/
-  scripts/
-    validate_factor_spec.py
-  tests/
-```
-
-命名规则：
-
-- Python package 使用 `evozeus_factor_lab`。
-- 抽象类命名为 `AbstractFactor`。
-- example factor 用 snake_case 文件名：`repeated_request.py`。
-- JSON spec example 用 dot/kebab id：`repeated-request.factor.json`。
-- 不创建 `submissions/`、`reviewed/`、`rejected/`、`packs/`、`manifests/`。
-
-## 7. Official Factors 目录
-
-定位：官方稳定 Python Factor contract，用户可审计。
+定位：Session Signal SKILL + official factor tools。`SKILL.md` 是方法层，负责综合判断什么样的历史记录是高价值的；`factors/<slug>/` 是它可调用、可解释、可测试的 tools。
 
 建议结构：
 
 ```text
-evozeus-factors-official/
+evozeus-session-signal-skill/
   AGENTS.md
   README.md
+  SKILL.md
   pyproject.toml
   src/
-    evozeus_factors_official/
+    evozeus_session_signal_skill/
       __init__.py
       factor.py
   schemas/
     official-factor-spec.schema.json
-  examples/
-    factors/
-    specs/
-    sessions/
+  factors/
+    <factor-slug>/
+      FACTOR.xml
+      factor.py
+      spec.json
+      session.json
   scripts/
     validate_official_factor_spec.py
   tests/
@@ -292,12 +258,15 @@ evozeus-factors-official/
 
 命名规则：
 
-- Python package 使用 `evozeus_factors_official`。
+- Python package 使用 `evozeus_session_signal_skill`。
 - 抽象类命名为 `OfficialFactor`。
+- 每个 factor tool 使用 `factors/<factor-slug>/`，slug 用 lower kebab-case。
+- 顶层 `SKILL.md` 说明如何组合 factor tool 输出，而不是只描述 Python contract。
 - official spec 必须包含 `stability: official`、`compatibility` 和 `governance.owner`。
 - 不放 pack release、manifest、checksum、SBOM、attestation 或 promotion queue。
+- `evozeus-factor-lab` 已转为 private/internal 历史实验仓库，不再是 mega repo active component，也不作为 public contribution route。
 
-## 8. Runtime 目录
+## 7. Runtime 目录
 
 定位：未来 CLI/TUI/local registry/report/selective install runtime。它承接所有需要执行、安装、扫描、生成本地 report、维护 local state 或暴露 local API 的能力。
 
@@ -348,18 +317,18 @@ evozeus-infra/
 
 - CLI 命令面用任务名：`judge`、`report`、`install`、`doctor`、`registry`。
 - 内部模块用能力名：`scanner`、`policy`、`lockfile`、`output`。
-- 不在 runtime repo 放 Factor contract 草案；contract 属于 factor repos。
+- 不在 runtime repo 放 Session Signal SKILL 的方法定义；方法定义属于 `evozeus-session-signal-skill`，公共语义仍属于 `EvoZeus` 主 repo。
 - runtime 只消费主 registry pointer、用户批准的 factor source 和 Python Factor contract。
 - runtime 可以在 trust policy 稳定后承接旧主 repo prototype 的设计意图，但实现必须在本 repo 重新经过 permission、sandbox、dependency 和 public install gate。
 
-## 9. Community 目录
+## 8. Web 目录
 
 定位：官网源码、public deployed surface、Discord / contribution route 入口。源码 private，页面输出 public。
 
 建议结构：
 
 ```text
-evozeus-community/
+evozeus-web/
   src/
     app/
     components/
@@ -381,7 +350,7 @@ evozeus-community/
 - 产品解释用 `guides/`，治理细节链接到主 repo，不复制一份。
 - Discord 入口页只提供路线，不接收 raw evidence。
 
-## 10. 迁移优先级
+## 9. 迁移优先级
 
 不建议一次性重排所有目录。建议按风险从低到高：
 
@@ -389,14 +358,17 @@ evozeus-community/
 2. 在全局文档中确认 `EvoZeus` 主 repo Protocol-only，并保持无执行层结构。
 3. 在 `EvoZeus` 主 repo 新增 `templates/` 和 `quality-gates/`，先只放 README / 草案。
 4. 给重型 scenario skills 增加 `references/`，不改 skill 行为。
-5. 补 `evozeus-factor-lab` 的 Python `AbstractFactor`、schema、examples、tests。
-6. 等 runtime 技术栈确定后，在 `evozeus-infra` 引入 `cmd/internal` 或 `packages/*`，并按权限模型重建 runtime 能力。
-7. 需要统一命名时，考虑把 `EvoZeus-community` 重命名为 `evozeus-community`；这不改变源码 private 策略。
+5. 将 `evozeus-factor-lab` 从 active mega repo submodule 移除，并保持 private/internal。
+6. 把 `evozeus-session-signal-skill` 收敛为 Session Signal SKILL + factor tools。
+7. 等 runtime 技术栈确定后，在 `evozeus-infra` 引入 `cmd/internal` 或 `packages/*`，并按权限模型重建 runtime 能力。
+8. Web source repo 已统一命名为 `evozeus-web`；这不改变源码 private 策略。
 
-## 11. 当前判断
+## 10. 当前判断
 
 - 先不新建 `evozeus-skills`。
 - 先不把 `cmd/`、`shortcuts/`、`internal/` 引入主 repo。
 - `EvoZeus` 主 repo 不再被定义为 runtime 或 reference implementation repo；执行层结构不回流主 repo。
+- `evozeus-factor-lab` 不再是 active component repo；不再作为 public contribution、contract 前置层或 runtime 默认来源。
+- `evozeus-session-signal-skill` 是 Session Signal SKILL，不是 pack release 仓库。
 - 可以立即采用 lower kebab-case 的新增目录和 future repo 命名。
 - 可以立即把 skill 内长文档拆到 `references/`，借鉴 `larksuite/cli` 的 progressive disclosure。

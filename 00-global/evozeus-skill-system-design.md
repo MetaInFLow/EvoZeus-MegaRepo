@@ -1,11 +1,13 @@
 # EvoZeus Skill System Design
 
-- Status: active draft
-- Last updated: 2026-06-18
-- Scope: EvoZeus 跨 repo Skill 体系、注册安装入口、场景路由和 component handoff
+- Status: active support draft
+- Last updated: 2026-06-20
+- Scope: EvoZeus 跨 repo Skill 支撑体系、注册安装入口、场景路由和 component handoff
 - Owner: MetaInFlow
 
 本文记录 EvoZeus Skill 体系的目标设计。它承接 2026-06-18 对当前项目所有 `SKILL.md` 的 review 结论，解决三类问题：
+
+注意：Skill 体系是 agent-readable 接入和行为固化的支撑层，不是 EvoZeus 的北极星。项目目标仍是通过社区真实案例迭代“判断高质量信号”的方法论；只有稳定、可复用且需要成为 agent instruction 的模式，才应该升级为 Skill。
 
 1. `/skill`、root `SKILL.md`、Start Here、scenario skill 的入口语义不一致。
 2. 主 repo scenario skill 和 component repo root skill 之间存在命名与职责冲突。
@@ -15,7 +17,7 @@
 
 | 原则 | 含义 |
 | --- | --- |
-| `/skill` 只做注册和安装引导 | Community `/skill` 是用户复制给 Agent 的接入说明，不直接承接 judgment、runtime scan 或 Factor execution |
+| `/skill` 只做注册和安装引导 | Web `/skill` 是用户复制给 Agent 的接入说明，不直接承接 judgment、runtime scan 或 Factor execution |
 | 安装必须安装两层 | 本地安装要有 EvoZeus skeleton，也要有 EvoZeus scenario skills |
 | 先检查再创建 | 本地已有 `.evozeus` 时必须先检查是否已注册、是否已安装 skeleton 和 skills，再决定更新或恢复 |
 | Protocol-only 仍然成立 | root `SKILL.md` 负责 zero-install judgment；runtime、scanner、runner、local state 不回到主 repo |
@@ -26,7 +28,7 @@
 ## 2. Skill 分层
 
 ```text
-Community /skill
+Web /skill
   -> registration and install guide
   -> local installer / Agent setup action
   -> .evozeus registration reconciliation
@@ -43,23 +45,21 @@ Scenario skills
 
 Component repo skills
   -> runtime implementation
-  -> factor contract lab
-  -> official factor contract
+  -> Session Signal SKILL / factor tools
 ```
 
 ## 3. 目标 Skill Inventory
 
 | Layer | Skill | Owner path | Target role | Current action |
 | --- | --- | --- | --- | --- |
-| Public entry | Community `/skill` | `10-repos/evozeus-community/src/app/skill/skill-content.ts` | 指导注册、安装、检查 `.evozeus`、说明下一步命令 | 重写为 install-first，不再自称 scenario router |
+| Public entry | Web `/skill` | `10-repos/evozeus-web/src/app/skill/skill-content.ts` | 指导注册、安装、检查 `.evozeus`、说明下一步命令 | 重写为 install-first，不再自称 scenario router |
 | Install owner | `EvoZeus-Install Registration` | `10-repos/evozeus/skills/evozeus-install-registration/SKILL.md` | 定义本地注册、skeleton install、skills install、install inventory | 新增 |
 | Protocol skeleton | `EvoZeus` | `10-repos/evozeus/SKILL.md` | zero-install judgment、Session Verdict Card、用户确认后路由 | 更新 `/skill` 和 install handoff |
 | First-use adapter | `EvoZeus-Start Here Onboarding` | `10-repos/evozeus/skills/evozeus-start-here-onboarding/SKILL.md` | 安装完成后的第一次 protocol-only judgment | 收窄为 first-use，不再承担注册安装 |
 | Router | `EvoZeus-Skill Index` | `10-repos/evozeus/skills/index/SKILL.md` | 根据用户明确意图选择 scenario skill | 增加 precedence rules |
 | Runtime route | `EvoZeus-Runtime Routing` | `10-repos/evozeus/skills/evozeus-runtime-routing/SKILL.md` | 从主 repo 上下文转交 runtime trust policy | 从 `evozeus-infra` 重命名，避免冲突 |
 | Infra component | `EvoZeus Infra` | `10-repos/evozeus-infra/SKILL.md` | CLI/TUI/local registry/scanner/factor execution/report execution owner | 保留 component owner，frontmatter 可改为 `evozeus-infra-component` 或保留唯一名后统一引用 |
-| Lab component | `EvoZeus Factor Lab` | `10-repos/evozeus-factor-lab/SKILL.md` | Python AbstractFactor 草案、spec、examples | 保留 |
-| Official component | `EvoZeus Official Factors` | `10-repos/evozeus-factors-official/SKILL.md` | Python OfficialFactor 稳定 contract、官方 schema、canonical examples | 保留 |
+| Session signal component | `EvoZeus Session Signal Skill` | `10-repos/evozeus-session-signal-skill/SKILL.md` | Session Signal SKILL、Python factor tools、官方 schema、canonical examples | 保留 |
 
 命名建议：优先把主 repo scenario skill 从 `evozeus-infra` 改为 `evozeus-runtime-routing`，让 `evozeus-infra` 这个名字留给 runtime component repo。迁移期可以保留一层 deprecated alias，但正式 cluster validator 应禁止重复 `name`。
 
@@ -69,15 +69,15 @@ Component repo skills
 sequenceDiagram
   autonumber
   participant User
-  participant Community as Community /skill
+  participant Web as Web /skill
   participant Installer as Agent installer
   participant Local as Local workspace
   participant Main as EvoZeus main repo
   participant Skills as EvoZeus skills
   participant Runtime as evozeus-infra
 
-  User->>Community: Open /skill
-  Community-->>User: Registration and install instructions
+  User->>Web: Open /skill
+  Web-->>User: Registration and install instructions
   User->>Installer: Run install/setup instruction
   Installer->>Local: Check .evozeus registration and install state
 
@@ -118,7 +118,7 @@ sequenceDiagram
 | `.evozeus/runtime/` | runtime component | lockfile、local scans、factor outputs、reports | 禁止默认创建；runtime 批准后才创建 |
 | `.evozeus/reports/` | runtime/report execution | local generated reports | 禁止默认创建；用户批准后才创建 |
 
-Community API 可以登记 hash 和公开安全 metadata；不得接收 raw session、workspace path、token、客户资料或私有 evidence。
+Web API 可以登记 hash 和公开安全 metadata；不得接收 raw session、workspace path、token、客户资料或私有 evidence。
 
 ## 6. Precedence Rules
 
@@ -133,16 +133,16 @@ Community API 可以登记 hash 和公开安全 metadata；不得接收 raw sess
 | 用户要改 `SKILL.md` 或 `skills/` | `EvoZeus-Development` + `EvoZeus-Skill Proposal` | 使用 skill instruction PR template | 不只读 Development |
 | 用户要保存或发布 judgment | `EvoZeus-Artifact Preservation` | `EvoZeus-Redaction` + route-specific skill | 不跳过用户批准 |
 
-## 7. Factor Contract Repo Decision
+## 7. Official Super SKILL Repo Decision
 
-目标设计采用 **contract-only factor repos**：
+目标设计采用 **Session Signal SKILL + factor tools**：
 
-- `evozeus-factor-lab` 表示 Python Factor contract lab，不再有 `reviewed/` channel。
-- `evozeus-factors-official` 表示稳定 Python OfficialFactor contract，不再是 release manifest / checksum / SBOM 仓库。
-- runtime 不能把 lab examples 或 official canonical examples 当默认安装业务 Factor。
-- 真实业务 Factor pack 和 scanner pack 的发布机制另行定义；在定义前不得塞进这两个 contract repo。
+- `evozeus-factor-lab` 已转为 private/internal，不再作为 cluster formal skill、public contribution route 或 runtime 默认来源。
+- `evozeus-session-signal-skill` 表示 Session Signal SKILL：`SKILL.md` 组合 factor tool 输出，`factors/<slug>/` 提供可解释 tools。
+- runtime 不能把 private lab、official canonical examples 或测试向量当默认安装业务 Factor。
+- 真实业务 Factor pack 和 scanner pack 的发布机制另行定义；在定义前不得塞进 official repo。
 
-这会牺牲一点资产发布速度，但可以避免 contract repo 被真实执行包、scanner 权限和供应链元数据污染。
+这会牺牲一点资产发布速度，但可以避免 official method repo 被真实执行包、scanner 权限和供应链元数据污染。
 
 ## 8. 必补 Skill 候选
 
