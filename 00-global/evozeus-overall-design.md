@@ -79,8 +79,10 @@ flowchart TB
   Mega["EvoZeus-MegaRepo<br/>全局索引、决策、跨 repo 设计"] --> Main["EvoZeus<br/>protocol / governance / intake / registry pointer"]
   Mega --> Web["evozeus-web<br/>官网 / Web 入口 / 展示层"]
   Mega --> Official["evozeus-session-signal-skill<br/>Session Signal SKILL / factor tools"]
+  Mega --> Wrapper["EvoZeus-wrapper<br/>static Skill repo / evolution harness"]
   Mega --> Runtime["evozeus-infra<br/>local execution kernel / CLI / TUI / scanner / runner"]
 
+  Main --> Wrapper
   Main --> Runtime
   Official --> Runtime
   Main --> Web
@@ -94,6 +96,7 @@ Repo 职责：
 | `EvoZeus` | Protocol-only 主 repo：`SKILL.md`、docs、schemas、governance gates、Case/Candidate intake、semantic artifact、registry pointer | active；执行层遗留已清理 |
 | `evozeus-web` | private Web 源码、官网部署面、社区解释层、`/skill` 入口 | active / 已接入 |
 | `evozeus-session-signal-skill` | Session Signal SKILL；`SKILL.md` 负责综合判断，`factors/<slug>/` 是可解释 factor tools | active / 已接入 |
+| `EvoZeus-wrapper` | 由 EvoZeus 母体调度，把 promoted 或已有静态 `SKILL.md` repo 化，并补齐 feedback、design doc、PR、CHANGELOG、release 和 preflight 闭环 | active seed / 已接入 |
 | `evozeus-infra` | local execution kernel：workspace、scanner sandbox、Python factor runner、SQLite ledger、report、CLI/TUI/companion | active shell / 产品能力仍需实现 |
 
 `evozeus-factor-lab` 已转为 private/internal repo，并从 mega repo active submodule 中移除。后续不再把 lab 当成公开协作路径、contract 前置层或 runtime 默认来源。
@@ -129,6 +132,7 @@ Community observation / contribution route
 | 沉淀对象 | 路由 |
 | --- | --- |
 | Case / Evidence / judgment report | `EvoZeus` issue 或 Candidate PR |
+| promoted static Skill / 已有本地 Skill 的 repo 化和演进 harness | EvoZeus 判断并路由到 `EvoZeus-wrapper` |
 | semantic Factor proposal | `EvoZeus` 主 repo |
 | Session Signal SKILL / factor tool 方法 | `evozeus-session-signal-skill` |
 | Python factor tool contract / canonical example | `evozeus-session-signal-skill` |

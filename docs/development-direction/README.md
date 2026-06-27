@@ -18,6 +18,7 @@ EvoZeus 当前处在 **methodology-first + community-intake-first + protocol-onl
 - `EvoZeus` 主 repo 只拥有 protocol、governance、intake、semantic artifact 和 registry pointer，不拥有 runtime 执行层。
 - 让 `evozeus-web` 的部署面成为 public-facing 解释层和社区入口，重点解释如何贡献高质量信号判断材料；Web 源码保持 private。
 - Skill 不是北极星。Skill 体系只负责 agent-readable 接入、路由和行为固化；只有当判断规则足够稳定时，才考虑沉淀为 Skill。
+- `EvoZeus-wrapper` 不作为独立用户入口；它是 EvoZeus 母体调度下的静态 Skill repo 化和演进治理能力。
 - Factor tools 不直接塞进主 repo；`evozeus-session-signal-skill` 承载 Session Signal SKILL、Python factor tool contract、spec 和脱敏 examples，不承载真实业务 pack 生命周期。
 - `evozeus-infra` 暂时不抢跑，等 registry、trust policy、scanner permission model 稳定后再进入可执行产品面。
 - 主 repo 的旧执行层遗留已清理；runtime 设计材料已移至 `10-repos/evozeus-infra/docs/`，scanner / runner prototype 已移至 `10-repos/evozeus-infra/prototypes/main-repo-runtime/`，不作为主 repo 的默认用户入口、安装源或 official runtime contract。
@@ -31,6 +32,7 @@ EvoZeus 当前处在 **methodology-first + community-intake-first + protocol-onl
 | Web Surface | P0 | 官网部署面能解释高质量信号判断方法论、社区贡献路径和 `/skill` agent 接入边界；源码保持 private |
 | Interaction / Verdict Surface | P0/P1/P2 | 按 [EvoZeus 交互体验设计路线](evozeus-interaction-design-roadmap.md) 先做 Verdict Card，再改首页体验，最后沉淀 Signal Review Rubric |
 | Skill System Support | P1 | `/skill`、注册安装、scenario skills、component handoff 和 validator 形成支撑闭环，但不作为项目主产出 |
+| Static Skill Wrapper | P1 | 由 EvoZeus 判断并调度，把 promoted 或已有静态 Skill 包装成 repo、feedback、design doc、PR、CHANGELOG、release 和 preflight 闭环 |
 | Infra Local Execution Kernel | P1 | 按 [Infra Local Execution Kernel 开发标准](infra-local-execution-kernel-development-standard.md) 将旧 `__infra__` 拆成可验证的本地执行内核 |
 | Official Super SKILL / Factor Tools | P1 | `SKILL.md` 能组合 factor tool 输出判断高价值历史记录；Python factor tool contract、spec、example 和 result contract 清晰 |
 | Runtime Trust | P1 | 明确 local-first、opt-in scanner、permission、Factor contract、lockfile 规则，并在 `evozeus-infra` 承接实现 |
@@ -45,6 +47,7 @@ EvoZeus 当前处在 **methodology-first + community-intake-first + protocol-onl
 | `EvoZeus` | public protocol、`SKILL.md`、ontology、schema、governance、Case/Candidate intake、semantic artifact、registry pointer |
 | `evozeus-web` | private Web 源码；公开部署面、`/skill`、Discord / GitHub contribution route |
 | `evozeus-session-signal-skill` | Session Signal SKILL：`SKILL.md` 方法层、Python OfficialFactor tools、官方 spec schema、canonical examples |
+| `EvoZeus-wrapper` | EvoZeus 调度下的 static Skill repo 化和演进治理 harness；不作为独立用户入口 |
 | `evozeus-infra` | future CLI/TUI/local registry/report/selective install；承接执行层和从主 repo 迁出的 runtime prototype |
 
 ## 4. 当前执行顺序
@@ -54,11 +57,12 @@ EvoZeus 当前处在 **methodology-first + community-intake-first + protocol-onl
 3. 按 [EvoZeus 交互体验设计路线](evozeus-interaction-design-roadmap.md) 先产品化 `Session Verdict Card`，再把首页改成“体验一次裁决”，最后沉淀 Signal Review Rubric。
 4. 把社区入口讲清楚：官网、Discord 缓冲层、GitHub issue / PR 路线，优先承接 Case / Evidence / counterexample，而不是直接承接 Skill 生成。
 5. 收敛 Skill 体系：按 [Skill System Implementation Plan](skill-system-implementation.md) 修正 `/skill`、注册安装 owner、runtime skill 命名冲突、route precedence 和 cluster validator；这属于 agent 接入支撑层。
-6. 保持 `EvoZeus` 主 repo 无执行层结构；runtime 文档和未来实现落在 `evozeus-infra`。
-7. 按 [Infra Local Execution Kernel 开发标准](infra-local-execution-kernel-development-standard.md) 拆迁旧 `__infra__`：先 workspace/config/lockfile，再 SQLite ledger，再 scanner/resolver、factor runner、scan/analyze service 和 CLI/TUI/companion/report。
-8. 收敛 Session Signal SKILL：`session-signal-skill` 的 `SKILL.md` 负责高价值历史记录判断方法，`factors/<slug>/` 是可解释 factor tools。
-9. 补齐 factor tool contract：稳定 Python `OfficialFactor`、官方 schema、`FACTOR.xml`、spec 和 canonical examples。
-10. 等 trust policy 稳定后，在 `evozeus-infra` 启动可执行能力；用户可安装前 repo 必须 public。
+6. 把 static Skill wrapper 纳入 EvoZeus 的 artifact route：promoted 或已有本地 Skill 需要 repo/evolution harness 时，由 EvoZeus 路由到 `EvoZeus-wrapper`。
+7. 保持 `EvoZeus` 主 repo 无执行层结构；runtime 文档和未来实现落在 `evozeus-infra`。
+8. 按 [Infra Local Execution Kernel 开发标准](infra-local-execution-kernel-development-standard.md) 拆迁旧 `__infra__`：先 workspace/config/lockfile，再 SQLite ledger，再 scanner/resolver、factor runner、scan/analyze service 和 CLI/TUI/companion/report。
+9. 收敛 Session Signal SKILL：`session-signal-skill` 的 `SKILL.md` 负责高价值历史记录判断方法，`factors/<slug>/` 是可解释 factor tools。
+10. 补齐 factor tool contract：稳定 Python `OfficialFactor`、官方 schema、`FACTOR.xml`、spec 和 canonical examples。
+11. 等 trust policy 稳定后，在 `evozeus-infra` 启动可执行能力；用户可安装前 repo 必须 public。
 
 ## 5. 完成标准
 
